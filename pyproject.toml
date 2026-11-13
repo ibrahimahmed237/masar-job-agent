@@ -51,7 +51,8 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "src/masar/cli/*" = ["B008"] # Typer declares options as default arguments
-"tests/*" = ["E501"]         # expected documents are written out in full
+"tests/*" = ["E501", "B008", "PT018"]     # expected documents are written out in full; defaults built in place
+"src/masar/agent/prompts.py" = ["E501"]   # prompts are prose
 
 [tool.mypy]
 strict = true
