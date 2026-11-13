@@ -52,8 +52,8 @@ class Block:
 
     @property
     def is_claim(self) -> bool:
-        # A bullet under a job or a project always says something about the person.
-        return self.kind is BlockKind.CLAIM or self.section in (Section.EXPERIENCE, Section.PROJECT)
+        # Everything in a CV says something about the person. Only a letter has room for a sentence that does not.
+        return self.kind is BlockKind.CLAIM or self.section is not Section.BODY
 
 
 @dataclass(frozen=True, slots=True)

@@ -421,3 +421,10 @@ def test_a_draft_that_is_not_a_list_of_blocks_is_refused(raw: Any) -> None:
 
     assert result.value is None
     assert result.errors[0].code == "BLOCKS-SHAPE"
+
+
+def test_every_block_of_a_cv_is_a_claim_whatever_it_calls_itself() -> None:
+    soft = Block(Section.SUMMARY, BlockKind.PLAIN, "A strong engineer with a record of delivery.")
+    assert soft.is_claim
+    assert [v.code for v in check_block(soft, 0, ClaimContext(example_career(), TODAY))] == ["CLAIM_WITHOUT_FACT"]
+    assert not Block(Section.BODY, BlockKind.PLAIN, "I am writing about the role.").is_claim
