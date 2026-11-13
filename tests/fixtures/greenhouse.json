@@ -1,0 +1,47 @@
+{
+ "jobs": [
+  {
+   "id": 4011223,
+   "title": "Backend Engineer",
+   "updated_at": "2026-11-10T09:12:44-05:00",
+   "location": {
+    "name": "Riyadh, Saudi Arabia"
+   },
+   "absolute_url": "https://boards.greenhouse.io/tamween/jobs/4011223",
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;Tamween builds ordering software for grocery retailers.&lt;/p&gt;&lt;/div&gt;\n&lt;h2&gt;What you will do&lt;/h2&gt;\n&lt;ul&gt;&lt;li&gt;Build and run backend services in Node.js &amp;amp; TypeScript&lt;/li&gt;&lt;li&gt;Own the order pipeline on Kafka&lt;/li&gt;&lt;/ul&gt;\n&lt;h2&gt;What we ask for&lt;/h2&gt;\n&lt;ul&gt;&lt;li&gt;3+ years of experience building backend services&lt;/li&gt;&lt;li&gt;Experience with Postgres in production&lt;/li&gt;&lt;/ul&gt;\n&lt;p&gt;We offer visa sponsorship.&amp;nbsp;This is a full-time position in Riyadh.&lt;/p&gt;&lt;script&gt;alert(&#x27;x&#x27;)&lt;/script&gt;",
+   "departments": [
+    {
+     "id": 1,
+     "name": "Engineering"
+    }
+   ],
+   "offices": [
+    {
+     "id": 2,
+     "name": "Riyadh"
+    }
+   ],
+   "metadata": null
+  },
+  {
+   "id": 4011224,
+   "title": "Office Manager",
+   "updated_at": "2026-11-09T09:12:44-05:00",
+   "location": {
+    "name": "Riyadh"
+   },
+   "absolute_url": "https://boards.greenhouse.io/tamween/jobs/4011224",
+   "content": "&lt;p&gt;Short.&lt;/p&gt;"
+  },
+  {
+   "id": 4011225,
+   "title": "",
+   "location": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;Tamween builds ordering software for grocery retailers.&lt;/p&gt;&lt;/div&gt;\n&lt;h2&gt;What you will do&lt;/h2&gt;\n&lt;ul&gt;&lt;li&gt;Build and run backend services in Node.js &amp;amp; TypeScript&lt;/li&gt;&lt;li&gt;Own the order pipeline on Kafka&lt;/li&gt;&lt;/ul&gt;\n&lt;h2&gt;What we ask for&lt;/h2&gt;\n&lt;ul&gt;&lt;li&gt;3+ years of experience building backend services&lt;/li&gt;&lt;li&gt;Experience with Postgres in production&lt;/li&gt;&lt;/ul&gt;\n&lt;p&gt;We offer visa sponsorship.&amp;nbsp;This is a full-time position in Riyadh.&lt;/p&gt;&lt;script&gt;alert(&#x27;x&#x27;)&lt;/script&gt;"
+  },
+  "not a job"
+ ],
+ "meta": {
+  "total": 4
+ }
+}

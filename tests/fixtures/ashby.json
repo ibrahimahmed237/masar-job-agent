@@ -1,0 +1,34 @@
+{
+ "apiVersion": "1",
+ "jobs": [
+  {
+   "id": "c0ffee00-1234-4abc-9def-000011112222",
+   "title": "AI Engineer",
+   "location": "Cairo",
+   "department": "Engineering",
+   "team": "Assistants",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "employmentType": "FullTime",
+   "publishedAt": "2026-11-01T08:00:00.000+00:00",
+   "descriptionPlain": "Sanad builds assistants for customer support teams. You will design agent flows with LangGraph, write evaluations, and ship them to production with the platform team. We ask for 3+ years of Python and experience with LLM applications.",
+   "descriptionHtml": "<p>Sanad builds assistants.</p>",
+   "jobUrl": "https://jobs.ashbyhq.com/sanad/c0ffee00-1234-4abc-9def-000011112222",
+   "applyUrl": "https://jobs.ashbyhq.com/sanad/c0ffee00-1234-4abc-9def-000011112222/application"
+  },
+  {
+   "id": "deadbeef-0000-4000-8000-000000000001",
+   "title": "Hidden role",
+   "isListed": false,
+   "descriptionPlain": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+   "jobUrl": "https://jobs.ashbyhq.com/sanad/x"
+  },
+  {
+   "id": "deadbeef-0000-4000-8000-000000000002",
+   "title": "Thin role",
+   "isListed": true,
+   "descriptionPlain": "Thin."
+  }
+ ]
+}

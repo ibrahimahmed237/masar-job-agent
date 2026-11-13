@@ -1,0 +1,45 @@
+[
+ {
+  "id": "7a1c0f1e-1111-4222-8333-944455556666",
+  "text": "Platform Engineer",
+  "createdAt": 1762700000000,
+  "categories": {
+   "location": "Dubai",
+   "commitment": "Full-time",
+   "team": "Platform",
+   "department": "Engineering",
+   "allLocations": [
+    "Dubai",
+    "Remote"
+   ]
+  },
+  "country": "AE",
+  "workplaceType": "hybrid",
+  "descriptionPlain": "Qafila moves freight across the Gulf. The platform team runs the services every other team builds on. You will work on the deployment pipeline and the shared libraries.",
+  "description": "<div>Qafila moves freight across the Gulf.</div>",
+  "lists": [
+   {
+    "text": "Requirements",
+    "content": "<li>5+ years with Go or Java</li><li>Kubernetes in production</li>"
+   },
+   {
+    "text": "Nice to have",
+    "content": "<li>Terraform</li>"
+   }
+  ],
+  "additionalPlain": "We sponsor visas for this role.",
+  "hostedUrl": "https://jobs.lever.co/qafila/7a1c0f1e-1111-4222-8333-944455556666",
+  "applyUrl": "https://jobs.lever.co/qafila/7a1c0f1e-1111-4222-8333-944455556666/apply"
+ },
+ {
+  "id": "8b2d1a2f-aaaa-4bbb-8ccc-dddd00001111",
+  "text": "Intern",
+  "categories": {},
+  "descriptionPlain": "Too short.",
+  "lists": []
+ },
+ {
+  "text": "No id",
+  "descriptionPlain": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ }
+]
