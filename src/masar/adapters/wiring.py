@@ -30,10 +30,12 @@ def open_masar(
     model: ChatModel | None = None,
     boards: JobBoards | None = None,
     clock: Clock | None = None,
+    new_id: Callable[[], str] | None = None,
 ) -> Opened:
     """Opens the database of the Masar folder and builds the use cases on it. Call ``close`` when done.
 
-    A model, job boards or a clock given here take the place of the configured ones: for tests and the demo.
+    A model, job boards, a clock or a maker of run ids given here take the place of the real ones: for tests
+    and the demo.
     """
     settings.home.mkdir(parents=True, exist_ok=True)
     store = SqliteStore(settings.database)
@@ -48,6 +50,7 @@ def open_masar(
         checkpointer.conn.close()
         store.close()
 
+    ids = {"new_id": new_id} if new_id is not None else {}
     app = Masar(
         store=store,
         files=LocalFiles(settings.career_file, settings.watchlist_file),
@@ -56,5 +59,6 @@ def open_masar(
         model=model,
         boards=boards or http_boards,
         daily_tokens=settings.daily_tokens,
+        **ids,
     )
     return Opened(app, close)

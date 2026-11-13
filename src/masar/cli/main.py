@@ -71,7 +71,7 @@ def emit(as_json: bool, data: Any, lines: list[str]) -> None:
         say(json.dumps(data, ensure_ascii=False, indent=2))
     else:
         for line in lines:
-            say(line)
+            say(line.rstrip())
 
 
 @contextmanager

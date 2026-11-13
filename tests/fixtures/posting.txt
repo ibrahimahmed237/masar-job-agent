@@ -1,0 +1,15 @@
+Backend Engineer at Tamween (Riyadh, hybrid)
+
+Tamween builds ordering and delivery software for grocery retailers in Saudi Arabia.
+You will join the platform team that owns the order pipeline.
+
+What we ask for
+- 3+ years of experience building backend services
+- Strong knowledge of Node.js or Python
+- Experience with Postgres and Kafka in production
+- Fluent English is required
+
+Nice to have
+- Experience with Kubernetes
+
+We offer visa sponsorship and relocation support. This is a full-time position.
