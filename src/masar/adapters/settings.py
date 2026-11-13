@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -46,7 +47,8 @@ class Settings:
             "provider": self.provider,
             "model": self.model,
             "api_key": "***" if self.api_key else None,
-            "base_url": self.base_url,
+            # An address can carry a name and a password before the "@".
+            "base_url": re.sub(r"//[^/@]*@", "//***@", self.base_url) if self.base_url else None,
             "daily_tokens": self.daily_tokens,
         }
 

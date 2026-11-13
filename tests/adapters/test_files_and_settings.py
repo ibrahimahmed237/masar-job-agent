@@ -207,3 +207,17 @@ def test_the_system_clock_gives_utc_and_goes_forward() -> None:
     assert clock.now().utcoffset() is not None
     assert clock.now().utcoffset().total_seconds() == 0  # type: ignore[union-attr]
     assert clock.monotonic() <= clock.monotonic()
+
+
+def test_a_password_in_the_address_of_a_model_server_is_not_shown() -> None:
+    settings = load_settings(
+        {
+            "MASAR_LLM_PROVIDER": "openai",
+            "MASAR_LLM_MODEL": "m",
+            "MASAR_LLM_API_KEY": "k",
+            "MASAR_LLM_BASE_URL": "https://user:PASSWORD@proxy.test/v1",
+        }
+    )
+    assert settings.shown()["base_url"] == "https://***@proxy.test/v1"
+    assert settings.base_url == "https://user:PASSWORD@proxy.test/v1"  # it is still used as given
+    assert load_settings({"HOME": "/h"}).shown()["base_url"] is None
