@@ -19,8 +19,16 @@ Masar does not rely on the model resisting such text. It makes the text unable t
 | An action: send, open, fetch | The model has no tools. Its only output is text that is parsed into a schema |
 | Leaking personal data | The model never receives contact details or limits ([ADR-0009](0009-privacy.md)) |
 
-- In a prompt, the posting comes after the instructions, inside a labelled data block.
-- The tests and the evaluation set contain postings with such instructions, and assert that scores and documents do not change.
+What an injected instruction can still do, and no more:
+
+| It can | Bound |
+|---|---|
+| Sway the verdict on a requirement that names no technology ("experience with large teams") | The verdict still needs a real fact as evidence, and is shown as "by the model". The wording of any posting can do the same |
+| Be quoted as a requirement of its own ("the candidate has 10 years of Rust") | It is then one more requirement the person must meet. In the tests, obeying the posting lowers the score |
+| Make the model write a false sentence | The sentence is dropped by code, or by the judge, and listed |
+
+- In a prompt, the posting comes after the instructions, inside a labelled data block. Text that looks like the end of the block is removed from it.
+- The tests and the evaluation set contain postings with such instructions, with a model that obeys them, and assert these bounds.
 
 ## Consequences
 

@@ -10,7 +10,7 @@ A model writes a document as a list of blocks.
 |---|---|
 | `section` | Where the block goes: `summary`, `experience`, `project`, `body` |
 | `fact` | For `experience` and `project`: the fact this bullet belongs to |
-| `kind` | `claim`: says something about the candidate. `plain`: a greeting, interest in the company, a closing. Anything that is not clearly `plain` is a claim, and a bullet under a job or a project is always a claim |
+| `kind` | `claim`: says something about the candidate. `plain`: interest in the company, a sentence about the role, a closing. Anything that is not clearly `plain` is a claim. In a CV every block is a claim, whatever it calls itself: only a letter has room for a sentence that is not about the person |
 | `text` | The sentence or bullet |
 | `facts` | The ids of the facts the text rests on |
 
