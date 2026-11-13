@@ -1,13 +1,12 @@
 [project]
 name = "masar"
 version = "0.1.0"
-description = "A personal job-hunt agent that cannot invent claims: collect postings, screen and score them, draft documents grounded in your own career file."
+description = "A personal job-hunt agent that may only say what your career file says: collect postings, screen and score them, draft documents checked against your own facts."
 readme = "README.md"
 license = "MIT"
 authors = [{ name = "Ibrahim Ahmed" }]
 requires-python = ">=3.12"
 dependencies = [
-  "pydantic>=2.7",
   "pyyaml>=6.0",
   "langgraph>=1.0",
   "langgraph-checkpoint-sqlite>=3.0",
@@ -54,12 +53,12 @@ ignore = [
 "tests/*" = ["E501", "B008", "PT018"]     # expected documents are written out in full; defaults built in place
 "src/masar/agent/prompts.py" = ["E501"]   # prompts are prose
 "src/masar/cli/main.py" = ["E501"]        # lines of output and help are written out
+"scripts/*" = ["E501"]                    # the demo holds its texts in full
 
 [tool.mypy]
 strict = true
 python_version = "3.12"
 files = ["src", "tests"]
-plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
