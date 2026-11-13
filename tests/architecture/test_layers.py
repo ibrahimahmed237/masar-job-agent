@@ -103,3 +103,55 @@ def test_the_domain_is_pure() -> None:
                 problems.append(f"{path.relative_to(SOURCE)} imports {root}")
 
     assert not problems, "; ".join(sorted(problems))
+
+
+# Masar reads and prepares. It never acts on the outside world (ADR-0003): these modules would let it.
+FORBIDDEN_EVERYWHERE = {
+    "subprocess",
+    "smtplib",
+    "webbrowser",
+    "ftplib",
+    "telnetlib",
+    "socket",
+    "requests",
+    "urllib.request",
+}
+
+# The use cases only a person may start. An assistant has no tool for them.
+DECIDING_USE_CASES = ("decide", "approved_document", "move_application", "fetch")
+
+
+def test_no_module_can_act_on_the_outside_world() -> None:
+    problems = []
+    for _, path in _files():
+        for name in _imports(path):
+            if name in FORBIDDEN_EVERYWHERE or name.split(".")[0] in FORBIDDEN_EVERYWHERE:
+                problems.append(f"{path.relative_to(SOURCE)} imports {name}")
+
+    assert not problems, "; ".join(sorted(problems))
+
+
+def test_the_only_network_calls_are_a_get_to_a_job_board_and_a_post_to_a_model() -> None:
+    calls = []
+    for package, path in _files():
+        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                owner = ast.unparse(node.func.value)
+                if owner.endswith("_client") and node.func.attr not in ("close",):
+                    method = ast.unparse(node.args[0]) if node.func.attr in ("stream", "request") else node.func.attr
+                    calls.append((package, path.name, method))
+
+    assert sorted(calls) == [("adapters", "boards.py", "'GET'"), ("adapters", "llm.py", "post")]
+
+
+def test_the_mcp_server_never_calls_a_use_case_that_decides() -> None:
+    called = set()
+    for package, path in _files():
+        if package != "mcp_server":
+            continue
+        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                called.add(node.func.attr)
+
+    assert called.isdisjoint(DECIDING_USE_CASES), called & set(DECIDING_USE_CASES)
+    assert {"assess", "draft", "check_claims"} <= called  # and the test does see what the server calls
