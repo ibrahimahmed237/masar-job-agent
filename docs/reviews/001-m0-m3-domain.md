@@ -20,7 +20,7 @@
 | 10 | Correctness | A quote of one letter is "in the posting" by accident, so a made-up requirement could keep it. | Quotes shorter than 12 characters are refused. |
 | 11 | Design | The model's own title and company for the job were going to be kept. They are one more thing to trust for no gain. | The title and company come from the posting record. |
 | 12 | Usefulness | When the model says `missing` for a skill the person has, code must not raise the verdict, but saying nothing hides a miss. | The verdict stays; a warning names the facts that show the skill. |
-| 13 | Tests | Seven deliberate bugs broke no test: the boundary after a dot, the quote check of the years, rounding of the score, a product name in a plain block, and three others. | A test for each (see below). |
+| 13 | Tests | Four deliberate bugs broke no test: the boundary after a dot, the quote check of the years, rounding of the score, a product name in a plain block. | A test for each (see below). |
 
 ## Experiments
 

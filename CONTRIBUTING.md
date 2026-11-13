@@ -63,7 +63,7 @@ A package may only import the packages below it in this table ([ADR-0001](docs/a
 - Put a rule in `masar.domain` and test it there first.
 - The domain has no I/O and no clock. Callers pass in what it needs.
 - A host never holds a rule. It translates.
-- Expected failures are returned as results with findings. Exceptions are for bugs and broken infrastructure.
+- In the domain, an expected failure is a result with findings, never an exception. A use case that will not do what was asked raises `Refused` (the answer is no) or `AppError` (it could not run), and a host turns that into an exit code or a tool error.
 - Anything a model returns is parsed and checked before it is used ([ADR-0002](docs/adr/0002-model-writes-code-verifies.md)).
 
 ## Commits

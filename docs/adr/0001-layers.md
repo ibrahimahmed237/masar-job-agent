@@ -18,7 +18,7 @@ The rules that keep Masar honest (screening, scoring, claim checks) must be easy
 | Ports | `masar.ports` | `domain` |
 | Domain | `masar.domain` | Nothing of ours |
 
-- The domain has no I/O, no clock, no network and no model. It imports the standard library and Pydantic.
+- The domain has no I/O, no clock, no network and no model. It imports the standard library only.
 - LangGraph is imported only in `masar.agent`. SQLite and HTTP only in `masar.adapters`.
 - A test reads the imports of every source file and fails on a forbidden one.
 

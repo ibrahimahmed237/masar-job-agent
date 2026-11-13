@@ -1,6 +1,6 @@
 # Domain — the career file, jobs and applications
 
-`masar.domain` holds the data models and every rule that needs no I/O. It imports the standard library and Pydantic. Anything that depends on "today" takes the date as an argument.
+`masar.domain` holds the data models and every rule that needs no I/O. It imports the standard library only. Anything that depends on "today" takes the date as an argument.
 
 ## The career file
 

@@ -91,7 +91,7 @@ flowchart TB
 
 | Part | Owns | Depends on |
 |---|---|---|
-| **masar.domain** | The career file, the job model, screening, scoring, the claim checks, the application states. Pure code: no I/O, no clock | Pydantic only |
+| **masar.domain** | The career file, the job model, screening, scoring, the claim checks, the application states. Pure code: no I/O, no clock | The standard library only |
 | **masar.ports** | What the world must provide: a chat model, a store, job sources, a clock | Domain |
 | **masar.agent** | The two flows as LangGraph graphs, the prompts, the model session with its budget and trace | Domain, ports, LangGraph |
 | **masar.app** | Use cases: fetch, add, assess, tailor, decide a draft, move an application, today | Agent, ports, domain |
@@ -134,17 +134,18 @@ flowchart LR
   R --> C
   J -->|clean, or no tries left| AS[Assemble<br/>code: drop what failed, build the document]
   AS --> H{{Wait for the person}}
-  H -->|approve| OK[(Approved)]
+  H -->|approve, and the checks still pass| OK[(Approved)]
   H -->|reject| NO[(Rejected)]
+  H -->|edit: checked by code again| H
 ```
 
 1. **Plan.** Code picks the facts that matter for this job (the evidence of the assessment first) and the structure of the document.
 2. **Draft.** The model writes the document as **blocks**. Each block names the facts it rests on.
-3. **Check.** Code checks each block against its facts: every technology, product-like name, number, employer and seniority word in the text must be in those facts.
-4. **Judge.** A second model call reads each block with its facts and says if the facts support the claim. It catches what word lists cannot.
+3. **Check.** Code checks each block against its facts: every technology, name, number, employer and word of rank in the text must be in those facts.
+4. **Judge.** A second model call reads each block that passed, with its facts, and says if the facts support it. It catches what word lists cannot: a claim that names nothing.
 5. **Repair.** The model gets the list of violations and tries again, at most twice.
 6. **Assemble.** Code drops any block that still fails, and builds the document. The header, contacts, education and skills list come from the career file, never from the model.
-7. **Wait.** The flow pauses. The state is saved in the database, so the process can end. `masar drafts approve`, `reject` or `edit` continues it. Approval runs the code checks once more against the career file as it is then.
+7. **Wait.** The flow pauses. The state is saved in the database, so the process can end. `masar drafts approve`, `reject` or `edit` continues it. Approval runs the code checks once more against the career file as it is then. An edit goes through the same code checks as a draft.
 
 ### 6.3 An application's life
 
@@ -171,7 +172,7 @@ stateDiagram-v2
   skipped --> found: reopened
 ```
 
-Masar moves an application to `drafted` by itself when a document is approved. Every other move is the person's, with a note. `masar today` lists what needs attention: new jobs worth a look, drafts waiting, applications with no news for a while.
+Masar moves an application to `drafted` by itself when a document is approved. Every other move is the person's, with a note. `masar today` lists what needs attention: drafts that wait, shortlisted jobs with nothing drafted, applications with no news for a while.
 
 ## 7. Data
 
@@ -190,7 +191,7 @@ One SQLite file ([ADR-0006](adr/0006-sqlite.md)) and one YAML file.
 
 | Interface | For | Summary |
 |---|---|---|
-| CLI | The candidate | `masar init`, `profile`, `add`, `fetch`, `jobs`, `assess`, `tailor`, `drafts`, `apps`, `today`, `runs`, `eval`, `export` |
+| CLI | The candidate | `masar init`, `config`, `profile`, `facts`, `add`, `fetch`, `jobs`, `assess`, `tailor`, `drafts`, `export`, `apps`, `today`, `runs`, `check`, `eval` |
 | MCP server | AI assistants | Read jobs and drafts, add a posting, run an assessment, draft a document, check claims. No approval, no state changes |
 | Library | Python code | `masar.domain` with no host |
 
@@ -200,8 +201,9 @@ Details: [interfaces](lld/interfaces.md).
 
 - **No outside actions.** No code path sends a message, submits a form or writes outside the Masar folder and the export folder the person names ([ADR-0003](adr/0003-no-outside-actions.md)).
 - **Approval is a human act.** Only the CLI can approve a draft or move an application. The MCP server has no such tool, so an assistant cannot approve for the person.
-- **Postings are untrusted.** The model has no tools. Its output is parsed into a schema and checked. A posting cannot raise its own score: the score is computed from verdicts, and a verdict needs evidence that code can see ([ADR-0012](adr/0012-untrusted-postings.md)).
-- **Least data to the model.** A model call gets the posting and the facts chosen for the step. Name, email, phone and links are added by code after the model is done ([ADR-0009](adr/0009-privacy.md)).
+- **Postings are untrusted.** The model has no tools. Its output is parsed into a schema and checked. The model writes no score: code computes it from verdicts, and a verdict on a named technology needs a fact that has it. What hidden instructions in a posting can still do, and the bound on each, is in [ADR-0012](adr/0012-untrusted-postings.md).
+- **Text from outside is cleaned at the door.** A posting is shown in a terminal and handed to assistants. Control characters and the marks that reorder text are removed when it is saved, and a block that holds one is refused.
+- **Least data to the model.** A model call gets the posting and the facts chosen for the step. Name, email, phone and links are added by code after the model is done ([ADR-0009](adr/0009-privacy.md)). For the same reason an assistant gets a draft as its blocks, and never the finished text.
 - **Keys** come from the environment, are never stored in the database, and print as `***`.
 - **Budgets.** Each run has limits on model calls, tokens and time. Each day has a token limit.
 - **Fetching** uses only the listed public APIs, with a timeout, a size limit and a named user agent.
@@ -214,7 +216,7 @@ Details: [interfaces](lld/interfaces.md).
 | Cost | Tokens per run and per day are stored and shown |
 | Failure | A model answer that does not fit the schema gets one retry with the error, then the run fails with the reason. A failed source does not stop the others |
 | Backup | One file to copy |
-| Config | Environment variables and a small config file in the Masar folder |
+| Config | Environment variables. `masar config` shows them, with the key hidden |
 
 ## 11. Testing strategy
 
@@ -223,8 +225,9 @@ Details: [interfaces](lld/interfaces.md).
 | Domain unit tests | Each screen rule, the score, each claim check, the state machine, the career file rules | pytest |
 | Property tests | The score is in range and monotonic; a text made only of a fact's own words always passes the checks | Seeded random inputs |
 | Graph tests | Both flows with a scripted model: repair, stop at the limits, pause and resume across a "restart" | A deterministic chat model |
-| Injection tests | Postings with hidden instructions change no score and add no claim | Fixtures |
-| Adapter tests | The store on a real SQLite file; the job-board clients and model clients against recorded answers | pytest, `httpx.MockTransport` |
+| Injection tests | A model that obeys a posting's hidden instructions in full: the score stays below what was ordered, no technology the person lacks is `met`, no ordered claim is in the document | Fixtures |
+| Adapter tests | The store on a real SQLite file; the job-board clients and model clients against answers in the shape of the real APIs | pytest, `httpx.MockTransport` |
+| A whole day | From `init` to `applied` through the command line; the same day is the [demo](demo.md), which a test keeps up to date | Typer's runner |
 | Host tests | CLI commands in process; MCP tools through an in-memory client | Typer's runner, the MCP SDK |
 | Evaluations | Extraction, assessment and claim checking as numbers, with a real model on demand | Sets in `evals/`, results saved in the repo |
 | Architecture test | The import rules between packages | The source files, read as a graph |
@@ -237,7 +240,7 @@ The promise in goal 1 is checked in three layers.
 
 | Layer | What | When it runs |
 |---|---|---|
-| 1. Code checks | Technologies, product-like names, numbers, employers and seniority words in a block must come from its facts | Always: on every draft, on every manual edit, and again at approval |
+| 1. Code checks | Technologies, names, numbers, employers and words of rank in a block must come from its facts | Always: on every draft, on every manual edit, and again at approval |
 | 2. Model judge | A second model reads each block with its facts and says "supported" or not | On every draft, when a model is configured |
 | 3. Evaluation | A set of drafts with planted false claims: the share that the checks catch, and the share of clean drafts they wrongly flag | In the tests (code checks), and on demand (with the judge) |
 
@@ -245,7 +248,7 @@ What the layers do **not** promise is in [section 13](#13-what-masar-is-not).
 
 ## 13. What Masar is not
 
-- Masar does not guarantee that a document is true. It guarantees that named technologies, product-like names, numbers, employers and seniority words come from the career file, and it asks a second model about the rest. The person reads every document before using it.
+- Masar does not guarantee that a document is true. It guarantees that technologies, names, numbers, employers and words of rank come from the career file, with the two limits the [claim checks](lld/grounding.md) name, and it asks a second model about the rest. The person reads every document before using it.
 - The career file is the person's own statement. Masar does not check it against reality.
 - A score is a reading aid, not a prediction of getting the job.
 - Masar is not connected to any job board or employer. It reads what they publish.
@@ -272,7 +275,7 @@ Details and "done when" lists are in the [build plan](plan/PLAN.md).
 |---|---|
 | A false claim that uses no technology, number, employer or title word | The judge reads every block; the person approves every draft; section 13 says so plainly |
 | The word lists flag a correct sentence (for example "Go" the language against "go" the verb) | Ambiguous names match only in their exact spelling; a flagged block is repaired or dropped, never silently kept; the evaluation measures wrong flags |
-| A job board changes its JSON | Each client parses defensively and reports what it skipped; recorded answers in the tests show the expected shape |
+| A job board changes its JSON | Each client parses defensively and reports what it skipped; the fixtures in the tests show the expected shape |
 | A model provider changes or is down | One small port, two adapters; every run fails with a clear reason and can be run again |
 | The career file is thin | `masar profile check` reports facts without skills or dates; the assessment shows which requirements had no evidence |
 | Costs grow with a long watchlist | Title filters and deduplication run before any model call; budgets per run and per day |
