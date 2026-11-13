@@ -1,0 +1,288 @@
+{
+ "set": "assessment",
+ "about": "Grounded jobs and the verdict a careful reader gives for each requirement, for the invented person of the example career file.",
+ "cases": [
+  {
+   "id": "a01",
+   "job": {
+    "title": "Backend Engineer",
+    "company": "Tamween",
+    "seniority": "mid",
+    "employment": "full-time",
+    "workplace": "hybrid",
+    "locations": [
+     {
+      "city": "Riyadh",
+      "country": "SA"
+     }
+    ],
+    "min_years": 3,
+    "sponsorship": "offered",
+    "languages": [
+     "en"
+    ],
+    "requirements": [
+     {
+      "id": "r1",
+      "text": "3+ years of experience building backend services",
+      "kind": "must",
+      "quote": "3+ years of experience building backend services",
+      "skills": [],
+      "all_skills": false
+     },
+     {
+      "id": "r2",
+      "text": "Strong knowledge of Node.js or Python",
+      "kind": "must",
+      "quote": "Strong knowledge of Node.js or Python",
+      "skills": [
+       "Node.js",
+       "Python"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r3",
+      "text": "Experience with Postgres and Kafka in production",
+      "kind": "must",
+      "quote": "Experience with Postgres and Kafka in production",
+      "skills": [
+       "PostgreSQL",
+       "Kafka"
+      ],
+      "all_skills": true
+     },
+     {
+      "id": "r4",
+      "text": "Experience with Kubernetes",
+      "kind": "nice",
+      "quote": "Experience with Kubernetes",
+      "skills": [
+       "Kubernetes"
+      ],
+      "all_skills": false
+     }
+    ]
+   },
+   "expected": {
+    "r1": "met",
+    "r2": "met",
+    "r3": "met",
+    "r4": "missing"
+   }
+  },
+  {
+   "id": "a02",
+   "job": {
+    "title": "Senior Platform Engineer",
+    "company": "Qafila",
+    "seniority": "senior",
+    "employment": "full-time",
+    "workplace": "onsite",
+    "locations": [
+     {
+      "city": "Dubai",
+      "country": "AE"
+     }
+    ],
+    "min_years": 6,
+    "sponsorship": "offered",
+    "languages": [],
+    "requirements": [
+     {
+      "id": "r1",
+      "text": "6+ years of experience running production systems",
+      "kind": "must",
+      "quote": "6+ years of experience running production systems",
+      "skills": [],
+      "all_skills": false
+     },
+     {
+      "id": "r2",
+      "text": "Deep knowledge of Kubernetes and Terraform",
+      "kind": "must",
+      "quote": "Deep knowledge of Kubernetes and Terraform",
+      "skills": [
+       "Kubernetes",
+       "Terraform"
+      ],
+      "all_skills": true
+     },
+     {
+      "id": "r3",
+      "text": "Strong programming skills in Go or Python",
+      "kind": "must",
+      "quote": "Strong programming skills in Go or Python",
+      "skills": [
+       "Go",
+       "Python"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r4",
+      "text": "Experience with observability tools such as Prometheus or Datadog",
+      "kind": "must",
+      "quote": "Experience with observability tools such as Prometheus or Datadog",
+      "skills": [
+       "Prometheus",
+       "Datadog"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r5",
+      "text": "Experience with Kafka",
+      "kind": "nice",
+      "quote": "Experience with Kafka",
+      "skills": [
+       "Kafka"
+      ],
+      "all_skills": false
+     }
+    ]
+   },
+   "expected": {
+    "r1": "partial",
+    "r2": "missing",
+    "r3": "met",
+    "r4": "met",
+    "r5": "met"
+   }
+  },
+  {
+   "id": "a03",
+   "job": {
+    "title": "AI Engineer",
+    "company": "Sanad",
+    "seniority": "unknown",
+    "employment": "contract",
+    "workplace": "remote",
+    "locations": [],
+    "min_years": 3,
+    "sponsorship": "not_offered",
+    "languages": [
+     "ar",
+     "en"
+    ],
+    "requirements": [
+     {
+      "id": "r1",
+      "text": "3+ years of professional experience with Python",
+      "kind": "must",
+      "quote": "3+ years of professional experience with Python",
+      "skills": [
+       "Python"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r2",
+      "text": "Hands-on experience building LLM applications with LangGraph or LangChain",
+      "kind": "must",
+      "quote": "Hands-on experience building LLM applications with LangGraph or LangChain",
+      "skills": [
+       "LangGraph",
+       "LangChain"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r3",
+      "text": "Experience writing evaluations for model outputs",
+      "kind": "must",
+      "quote": "Experience writing evaluations for model outputs",
+      "skills": [],
+      "all_skills": false
+     },
+     {
+      "id": "r4",
+      "text": "Experience with FastAPI",
+      "kind": "nice",
+      "quote": "Experience with FastAPI",
+      "skills": [
+       "FastAPI"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r5",
+      "text": "Experience fine-tuning models with PyTorch",
+      "kind": "nice",
+      "quote": "Experience fine-tuning models with PyTorch",
+      "skills": [
+       "PyTorch"
+      ],
+      "all_skills": false
+     }
+    ]
+   },
+   "expected": {
+    "r1": "met",
+    "r2": "met",
+    "r3": "missing",
+    "r4": "met",
+    "r5": "missing"
+   }
+  },
+  {
+   "id": "a04",
+   "job": {
+    "title": "Payments Engineer",
+    "company": "Dinar",
+    "seniority": "mid",
+    "employment": "full-time",
+    "workplace": "remote",
+    "locations": [],
+    "min_years": null,
+    "sponsorship": "unknown",
+    "languages": [],
+    "requirements": [
+     {
+      "id": "r1",
+      "text": "Experience integrating payment providers such as Stripe",
+      "kind": "must",
+      "quote": "Experience integrating payment providers such as Stripe",
+      "skills": [
+       "Stripe"
+      ],
+      "all_skills": false
+     },
+     {
+      "id": "r2",
+      "text": "Experience with Java and Spring Boot",
+      "kind": "must",
+      "quote": "Experience with Java and Spring Boot",
+      "skills": [
+       "Java",
+       "Spring Boot"
+      ],
+      "all_skills": true
+     },
+     {
+      "id": "r3",
+      "text": "Experience with PCI DSS compliance",
+      "kind": "must",
+      "quote": "Experience with PCI DSS compliance",
+      "skills": [],
+      "all_skills": false
+     },
+     {
+      "id": "r4",
+      "text": "A degree in computer science",
+      "kind": "nice",
+      "quote": "A degree in computer science",
+      "skills": [],
+      "all_skills": false
+     }
+    ]
+   },
+   "expected": {
+    "r1": "met",
+    "r2": "met",
+    "r3": "missing",
+    "r4": "met"
+   }
+  }
+ ]
+}

@@ -1,0 +1,808 @@
+{
+ "set": "claims",
+ "about": "Blocks written by hand about the invented person of the example career file. An honest block says only what its facts say. A false block has one thing planted: a skill, a number, an employer, a word of rank, a name that no list knows, or a soft claim with none of those.",
+ "cases": [
+  {
+   "id": "h01",
+   "expect": "honest",
+   "block": {
+    "section": "summary",
+    "kind": "claim",
+    "text": "Backend engineer with 5 years of experience building event-driven services.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "h02",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Built an event-driven inventory allocation service on Kafka and PostgreSQL.",
+    "facts": [
+     "acme-allocation"
+    ],
+    "fact": "acme-allocation"
+   }
+  },
+  {
+   "id": "h03",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Raised store availability to 93% with an event-driven allocation service.",
+    "facts": [
+     "acme-allocation"
+    ],
+    "fact": "acme-allocation"
+   }
+  },
+  {
+   "id": "h04",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Cut driver check-in time by 80% with a receiving queue over WhatsApp.",
+    "facts": [
+     "acme-receiving"
+    ],
+    "fact": "acme-receiving"
+   }
+  },
+  {
+   "id": "h05",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Used OCR to read delivery notes for the receiving queue, built with Node.js and Redis.",
+    "facts": [
+     "acme-receiving"
+    ],
+    "fact": "acme-receiving"
+   }
+  },
+  {
+   "id": "h06",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Built a multi-agent customer support assistant with LangGraph and Python.",
+    "facts": [
+     "acme-support-agent"
+    ],
+    "fact": "acme-support-agent"
+   }
+  },
+  {
+   "id": "h07",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "The assistant answers order questions and hands over to people when unsure.",
+    "facts": [
+     "acme-support-agent"
+    ],
+    "fact": "acme-support-agent"
+   }
+  },
+  {
+   "id": "h08",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Maintained GraphQL and REST APIs for product listings.",
+    "facts": [
+     "nimbus-apis"
+    ],
+    "fact": "nimbus-apis"
+   }
+  },
+  {
+   "id": "h09",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Moved hot paths to gRPC.",
+    "facts": [
+     "nimbus-apis"
+    ],
+    "fact": "nimbus-apis"
+   }
+  },
+  {
+   "id": "h10",
+   "expect": "honest",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Integrated Stripe and PayPal for stores in 4 currencies.",
+    "facts": [
+     "nimbus-payments"
+    ],
+    "fact": "nimbus-payments"
+   }
+  },
+  {
+   "id": "h11",
+   "expect": "honest",
+   "block": {
+    "section": "project",
+    "kind": "claim",
+    "text": "Wrote an open-source double-entry ledger service in Java and Spring Boot.",
+    "facts": [
+     "ledger-project"
+    ],
+    "fact": "ledger-project"
+   }
+  },
+  {
+   "id": "h12",
+   "expect": "honest",
+   "block": {
+    "section": "project",
+    "kind": "claim",
+    "text": "Covered the ledger with a full test suite and made its postings idempotent.",
+    "facts": [
+     "ledger-project"
+    ],
+    "fact": "ledger-project"
+   }
+  },
+  {
+   "id": "h13",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "At Acme Retail I built an allocation service on Kafka, and at Nimbus Commerce I maintained GraphQL APIs.",
+    "facts": [
+     "acme-allocation",
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "h14",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I hold a BSc in Computer Science from Cairo University.",
+    "facts": [
+     "bsc"
+    ]
+   }
+  },
+  {
+   "id": "h15",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I work daily with Docker, Linux and GitHub Actions.",
+    "facts": [
+     "tooling"
+    ]
+   }
+  },
+  {
+   "id": "h16",
+   "expect": "honest",
+   "block": {
+    "section": "summary",
+    "kind": "claim",
+    "text": "Builds assistants and event-driven services with Python, LangGraph and Kafka.",
+    "facts": [
+     "acme-support-agent",
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "h17",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I integrated two payment providers, Stripe and PayPal.",
+    "facts": [
+     "nimbus-payments"
+    ]
+   }
+  },
+  {
+   "id": "h18",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I built a queue that drivers reach over WhatsApp, which cut their check-in time by 80%.",
+    "facts": [
+     "acme-receiving"
+    ]
+   }
+  },
+  {
+   "id": "h19",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I have 5 years of experience, most recently on inventory allocation at Acme Retail.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "h20",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "As a Software Engineer at Acme Retail, I built a support assistant that hands over to people when it is unsure.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   }
+  },
+  {
+   "id": "h21",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "My work on product listings at Nimbus Commerce covered both GraphQL and REST.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "h22",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I write backend services in TypeScript with NestJS, and I keep them observable with Datadog.",
+    "facts": [
+     "acme-allocation",
+     "tooling"
+    ]
+   }
+  },
+  {
+   "id": "h23",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "The ledger I wrote is open source and runs in Docker.",
+    "facts": [
+     "ledger-project"
+    ]
+   }
+  },
+  {
+   "id": "h24",
+   "expect": "honest",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "Since 2023 I have worked at Acme Retail on inventory and receiving.",
+    "facts": [
+     "acme-allocation",
+     "acme-receiving"
+    ]
+   }
+  },
+  {
+   "id": "sk01",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Built an event-driven inventory allocation service on Kafka and Kubernetes.",
+    "facts": [
+     "acme-allocation"
+    ],
+    "fact": "acme-allocation"
+   }
+  },
+  {
+   "id": "sk02",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Maintained GraphQL and REST APIs in Go.",
+    "facts": [
+     "nimbus-apis"
+    ],
+    "fact": "nimbus-apis"
+   }
+  },
+  {
+   "id": "sk03",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "summary",
+    "kind": "claim",
+    "text": "Builds assistants with LangGraph, Python and PyTorch.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   }
+  },
+  {
+   "id": "sk04",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I wrote a ledger service in Java and deployed it on AWS.",
+    "facts": [
+     "ledger-project"
+    ]
+   },
+   "note": "The person lists AWS, but no cited fact says the ledger ran there."
+  },
+  {
+   "id": "sk05",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Built the receiving queue with Node.js, Redis and RabbitMQ.",
+    "facts": [
+     "acme-receiving"
+    ],
+    "fact": "acme-receiving"
+   }
+  },
+  {
+   "id": "sk06",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I maintained GraphQL APIs backed by MongoDB.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "sk07",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Integrated Stripe, PayPal and Adyen for stores in 4 currencies.",
+    "facts": [
+     "nimbus-payments"
+    ],
+    "fact": "nimbus-payments"
+   }
+  },
+  {
+   "id": "sk08",
+   "expect": "false",
+   "planted": "skill",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I built the allocation service in Rust.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "nu01",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Raised store availability to 99% with an event-driven allocation service.",
+    "facts": [
+     "acme-allocation"
+    ],
+    "fact": "acme-allocation"
+   }
+  },
+  {
+   "id": "nu02",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Cut driver check-in time by 80% across 120 stores.",
+    "facts": [
+     "acme-receiving"
+    ],
+    "fact": "acme-receiving"
+   }
+  },
+  {
+   "id": "nu03",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Integrated Stripe and PayPal for stores in 12 currencies.",
+    "facts": [
+     "nimbus-payments"
+    ],
+    "fact": "nimbus-payments"
+   }
+  },
+  {
+   "id": "nu04",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "summary",
+    "kind": "claim",
+    "text": "Backend engineer with 8 years of experience building event-driven services.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "nu05",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I maintained APIs that served 2 million requests a day.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "nu06",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "The assistant resolves 70% of order questions without a person.",
+    "facts": [
+     "acme-support-agent"
+    ],
+    "fact": "acme-support-agent"
+   }
+  },
+  {
+   "id": "nu07",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I cut infrastructure costs by thousands of dollars.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "nu08",
+   "expect": "false",
+   "planted": "number",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Made listings 3x faster by moving hot paths to gRPC.",
+    "facts": [
+     "nimbus-apis"
+    ],
+    "fact": "nimbus-apis"
+   }
+  },
+  {
+   "id": "em01",
+   "expect": "false",
+   "planted": "employer",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "At Acme Retail I maintained GraphQL and REST APIs for product listings.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   },
+   "note": "The fact belongs to another employer."
+  },
+  {
+   "id": "em02",
+   "expect": "false",
+   "planted": "employer",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "At Nimbus Commerce I built an event-driven inventory allocation service.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "em03",
+   "expect": "false",
+   "planted": "employer",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I built a customer support assistant during my time at Cairo University.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   }
+  },
+  {
+   "id": "em04",
+   "expect": "false",
+   "planted": "employer",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "My payments work at Acme Retail covered Stripe and PayPal.",
+    "facts": [
+     "nimbus-payments"
+    ]
+   }
+  },
+  {
+   "id": "ti01",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "experience",
+    "kind": "claim",
+    "text": "Led the team that built the inventory allocation service.",
+    "facts": [
+     "acme-allocation"
+    ],
+    "fact": "acme-allocation"
+   }
+  },
+  {
+   "id": "ti02",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "summary",
+    "kind": "claim",
+    "text": "Senior engineer on the receiving queue.",
+    "facts": [
+     "acme-receiving"
+    ]
+   }
+  },
+  {
+   "id": "ti03",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I managed the migration of hot paths to gRPC.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "ti04",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "As the architect of the support assistant, I chose LangGraph.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   }
+  },
+  {
+   "id": "ti05",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I am an expert in Kafka and PostgreSQL.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  },
+  {
+   "id": "ti06",
+   "expect": "false",
+   "planted": "title",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I owned payments at Nimbus Commerce.",
+    "facts": [
+     "nimbus-payments"
+    ]
+   }
+  },
+  {
+   "id": "na01",
+   "expect": "false",
+   "planted": "name",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "At Google I built an event-driven inventory allocation service.",
+    "facts": [
+     "acme-allocation"
+    ]
+   },
+   "note": "An employer that the career file does not know."
+  },
+  {
+   "id": "na02",
+   "expect": "false",
+   "planted": "name",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I built the assistant on a vector store called Qdrant.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   },
+   "note": "A product that no list knows."
+  },
+  {
+   "id": "na03",
+   "expect": "false",
+   "planted": "name",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I ran the workflows of the receiving queue on Temporal.",
+    "facts": [
+     "acme-receiving"
+    ]
+   }
+  },
+  {
+   "id": "na04",
+   "expect": "false",
+   "planted": "name",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I presented the ledger at a conference in Berlin.",
+    "facts": [
+     "ledger-project"
+    ]
+   }
+  },
+  {
+   "id": "na05",
+   "expect": "false",
+   "planted": "name",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "Careem uses the allocation service I built.",
+    "facts": [
+     "acme-allocation"
+    ]
+   },
+   "note": "The name begins the sentence, where a capital says nothing."
+  },
+  {
+   "id": "so01",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I built an inventory allocation service that the whole company depends on.",
+    "facts": [
+     "acme-allocation"
+    ]
+   },
+   "note": "Scope that the fact does not state."
+  },
+  {
+   "id": "so02",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "The support assistant made customers much happier.",
+    "facts": [
+     "acme-support-agent"
+    ]
+   },
+   "note": "A result that the fact does not state."
+  },
+  {
+   "id": "so03",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I designed, built and ran the receiving queue alone.",
+    "facts": [
+     "acme-receiving"
+    ]
+   },
+   "note": "A duty and a quality the fact does not state."
+  },
+  {
+   "id": "so04",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I was responsible for the reliability of all product listing APIs.",
+    "facts": [
+     "nimbus-apis"
+    ]
+   }
+  },
+  {
+   "id": "so05",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "The ledger is used in production by several companies.",
+    "facts": [
+     "ledger-project"
+    ]
+   }
+  },
+  {
+   "id": "so06",
+   "expect": "false",
+   "planted": "soft",
+   "block": {
+    "section": "body",
+    "kind": "claim",
+    "text": "I mentored junior engineers while building the allocation service.",
+    "facts": [
+     "acme-allocation"
+    ]
+   }
+  }
+ ]
+}

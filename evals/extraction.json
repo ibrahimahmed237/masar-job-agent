@@ -1,0 +1,197 @@
+{
+ "set": "extraction",
+ "about": "Invented postings with what a careful reader takes from each. A requirement is found when its quote overlaps the expected one.",
+ "cases": [
+  {
+   "id": "x01",
+   "posting": {
+    "company": "Qafila",
+    "title": "Senior Platform Engineer",
+    "text": "Senior Platform Engineer at Qafila (Dubai, on-site)\n\nQafila moves freight across the Gulf. The platform team runs the services that every other team builds on.\n\nRequirements\n- 6+ years of experience running production systems\n- Deep knowledge of Kubernetes and Terraform\n- Strong programming skills in Go or Python\n- Experience with observability tools such as Prometheus or Datadog\n\nNice to have\n- Experience with Kafka\n\nThis is a full-time position based in our Dubai office. We sponsor work visas for this role.\n"
+   },
+   "expected": {
+    "seniority": "senior",
+    "employment": "full-time",
+    "workplace": "onsite",
+    "countries": [
+     "AE"
+    ],
+    "min_years": 6,
+    "sponsorship": "offered",
+    "requirements": [
+     {
+      "quote": "6+ years of experience running production systems",
+      "kind": "must",
+      "skills": []
+     },
+     {
+      "quote": "Deep knowledge of Kubernetes and Terraform",
+      "kind": "must",
+      "skills": [
+       "Kubernetes",
+       "Terraform"
+      ]
+     },
+     {
+      "quote": "Strong programming skills in Go or Python",
+      "kind": "must",
+      "skills": [
+       "Go",
+       "Python"
+      ]
+     },
+     {
+      "quote": "Experience with observability tools such as Prometheus or Datadog",
+      "kind": "must",
+      "skills": [
+       "Prometheus",
+       "Datadog"
+      ]
+     },
+     {
+      "quote": "Experience with Kafka",
+      "kind": "nice",
+      "skills": [
+       "Kafka"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "x02",
+   "posting": {
+    "company": "Sanad",
+    "title": "AI Engineer",
+    "text": "AI Engineer (Remote, MENA) at Sanad\n\nSanad builds assistants for customer support teams in Arabic and English.\n\nWhat you will do\nDesign agent flows, write evaluations and ship them with the platform team.\n\nWhat we are looking for\n- 3+ years of professional experience with Python\n- Hands-on experience building LLM applications with LangGraph or LangChain\n- Experience writing evaluations for model outputs\n- Fluency in Arabic and English is required\n\nBonus\n- Experience with FastAPI\n\nContract role, fully remote within the MENA region. We are not able to sponsor visas.\n"
+   },
+   "expected": {
+    "seniority": "unknown",
+    "employment": "contract",
+    "workplace": "remote",
+    "min_years": 3,
+    "sponsorship": "not_offered",
+    "requirements": [
+     {
+      "quote": "3+ years of professional experience with Python",
+      "kind": "must",
+      "skills": [
+       "Python"
+      ]
+     },
+     {
+      "quote": "Hands-on experience building LLM applications with LangGraph or LangChain",
+      "kind": "must",
+      "skills": [
+       "LangGraph",
+       "LangChain"
+      ]
+     },
+     {
+      "quote": "Experience writing evaluations for model outputs",
+      "kind": "must",
+      "skills": []
+     },
+     {
+      "quote": "Fluency in Arabic and English is required",
+      "kind": "must",
+      "skills": []
+     },
+     {
+      "quote": "Experience with FastAPI",
+      "kind": "nice",
+      "skills": [
+       "FastAPI"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "x03",
+   "posting": {
+    "company": "Tamween",
+    "title": "Backend Engineer",
+    "text": "Backend Engineer at Tamween (Riyadh, hybrid)\n\nTamween builds ordering and delivery software for grocery retailers in Saudi Arabia.\n\nWhat we ask for\n- 3+ years of experience building backend services\n- Strong knowledge of Node.js or Python\n- Experience with Postgres and Kafka in production\n\nNice to have\n- Experience with Kubernetes\n\nWe offer visa sponsorship and relocation support. This is a full-time position.\n"
+   },
+   "expected": {
+    "employment": "full-time",
+    "workplace": "hybrid",
+    "countries": [
+     "SA"
+    ],
+    "min_years": 3,
+    "sponsorship": "offered",
+    "requirements": [
+     {
+      "quote": "3+ years of experience building backend services",
+      "kind": "must",
+      "skills": []
+     },
+     {
+      "quote": "Strong knowledge of Node.js or Python",
+      "kind": "must",
+      "skills": [
+       "Node.js",
+       "Python"
+      ]
+     },
+     {
+      "quote": "Experience with Postgres and Kafka in production",
+      "kind": "must",
+      "skills": [
+       "PostgreSQL",
+       "Kafka"
+      ]
+     },
+     {
+      "quote": "Experience with Kubernetes",
+      "kind": "nice",
+      "skills": [
+       "Kubernetes"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "x04",
+   "posting": {
+    "company": "Mizan",
+    "title": "Software Engineering Intern",
+    "text": "Software Engineering Intern at Mizan\n\nMizan is a small accounting startup in Cairo.\n\nYou will work with our engineers on the invoicing product for three months, in our Cairo office.\n\nYou should be studying computer science or a related field, and you should have written some code in Java.\nKnowledge of Spring Boot is a plus.\n"
+   },
+   "expected": {
+    "seniority": "intern",
+    "employment": "internship",
+    "workplace": "onsite",
+    "countries": [
+     "EG"
+    ],
+    "min_years": null,
+    "sponsorship": "unknown",
+    "requirements": [
+     {
+      "quote": "studying computer science or a related field",
+      "kind": "must",
+      "skills": []
+     },
+     {
+      "quote": "written some code in Java",
+      "kind": "must",
+      "skills": [
+       "Java"
+      ]
+     },
+     {
+      "quote": "Knowledge of Spring Boot is a plus",
+      "kind": "nice",
+      "skills": [
+       "Spring Boot"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}
