@@ -1,0 +1,12 @@
+# The job boards Masar reads with `masar fetch`. Only public job-board APIs: Greenhouse, Lever and Ashby.
+#
+# "board" is the short name in the board's address:
+#   https://boards.greenhouse.io/<board>      https://jobs.lever.co/<board>      https://jobs.ashbyhq.com/<board>
+# "company" is the name shown for its postings. Lever's European service needs "region: eu".
+#
+# A company on another system: paste its posting with `masar add`.
+
+boards: []
+#  - { source: greenhouse, board: example, company: Example }
+#  - { source: lever, board: example, region: eu }
+#  - { source: ashby, board: example }

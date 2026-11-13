@@ -53,6 +53,7 @@ ignore = [
 "src/masar/cli/*" = ["B008"] # Typer declares options as default arguments
 "tests/*" = ["E501", "B008", "PT018"]     # expected documents are written out in full; defaults built in place
 "src/masar/agent/prompts.py" = ["E501"]   # prompts are prose
+"src/masar/cli/main.py" = ["E501"]        # lines of output and help are written out
 
 [tool.mypy]
 strict = true

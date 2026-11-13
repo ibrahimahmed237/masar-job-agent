@@ -17,6 +17,7 @@ ALLOWED: dict[str, set[str]] = {
     "adapters": {"domain", "ports", "agent", "app"},
     "cli": {"domain", "ports", "agent", "app", "adapters"},
     "mcp_server": {"domain", "ports", "agent", "app", "adapters"},
+    "templates": set(),  # data files only
 }
 
 # Third-party packages with a home. Anywhere else they are a mistake.
