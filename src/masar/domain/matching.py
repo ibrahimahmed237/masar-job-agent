@@ -236,9 +236,11 @@ def check_evidence(job: Job, career: Career, raw: Any) -> Result[Assessment]:
                     evidence += [f.id for f in career.facts_with_skill(name) if f.id not in evidence]
                 enough = has == requirement.skill_names if requirement.all_skills else bool(has)
                 if verdict is Verdict.MET and not enough:
+                    # Some of the named skills: partly true. None of them: the model said something that
+                    # code can see is false, and nothing of it stands.
                     lacking = ", ".join(sorted(display(name) for name in requirement.skill_names - has))
-                    verdict, reason = Verdict.PARTIAL, f"no fact shows: {lacking}"
-                    findings.append(Finding.warning("EVIDENCE-SKILL", path, f"lowered to partial: {reason}"))
+                    verdict, reason = (Verdict.PARTIAL if has else Verdict.MISSING), f"no fact shows: {lacking}"
+                    findings.append(Finding.warning("EVIDENCE-SKILL", path, f"lowered to {verdict.value}: {reason}"))
 
         if verdict is not Verdict.MISSING and not evidence:
             verdict, reason = Verdict.MISSING, "no evidence"

@@ -98,9 +98,9 @@ def test_met_for_a_technology_the_person_lacks_is_lowered_and_the_score_follows(
     assert result.assessment is not None
     item = result.assessment.of("r4")
     assert item is not None
-    assert (item.verdict, item.lowered_from, item.by) == (Verdict.PARTIAL, Verdict.MET, "code")
+    assert (item.verdict, item.lowered_from, item.by) == (Verdict.MISSING, Verdict.MET, "code")
     assert "Kubernetes" in (item.reason or "")
-    assert result.score == 95  # not the 100 the model's answer would give
+    assert result.score == 90  # not the 100 the model's answer would give
 
 
 def test_evidence_that_does_not_exist_makes_the_verdict_missing() -> None:
@@ -227,8 +227,8 @@ class TestInjection:
         result, _, _ = run(self.obedient(), posting=example_posting(TEXT + INJECTION))
 
         said = verdicts(result)
-        assert said["r4"] == "partial"  # Kubernetes
-        assert said["r5"] == "partial"  # Rust
+        assert said["r4"] == "missing"  # Kubernetes
+        assert said["r5"] == "missing"  # Rust
         assert result.assessment is not None
         for item in result.assessment.items:
             assert set(item.evidence) <= example_career().fact_ids

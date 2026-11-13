@@ -252,14 +252,25 @@ def test_e3_met_for_a_named_skill_needs_a_fact_with_that_skill() -> None:
 
     r4 = assessment.of("r4")
     assert r4 is not None
+    # Nothing of a "met" that code can see is false stands, not even half of it.
     assert (r4.verdict, r4.by, r4.lowered_from, r4.reason) == (
-        Verdict.PARTIAL,
+        Verdict.MISSING,
         "code",
         Verdict.MET,
         "no fact shows: Kubernetes",
     )
-    assert r4.evidence == ("tooling",)
+    assert r4.evidence == ()
     assert codes == ["EVIDENCE-SKILL"]
+
+
+def test_e3_partial_for_a_skill_the_person_lacks_is_the_models_call() -> None:
+    # "Something close" is a judgement. It stays, with the fact the model named, and it is never more than partial.
+    assessment, codes = checked(raw(("r4", "partial", ["tooling"])))
+
+    r4 = assessment.of("r4")
+    assert r4 is not None
+    assert (r4.verdict, r4.by, r4.lowered_from, r4.evidence) == (Verdict.PARTIAL, "model", None, ("tooling",))
+    assert "EVIDENCE-SKILL" not in codes
 
 
 def test_e3_all_skills_means_every_one() -> None:
@@ -282,7 +293,6 @@ def test_e3_a_met_with_no_evidence_and_no_skill_ends_as_missing() -> None:
     assert r4 is not None
     assert (r4.verdict, r4.lowered_from) == (Verdict.MISSING, Verdict.MET)
     assert "EVIDENCE-SKILL" in codes
-    assert "EVIDENCE-NONE" in codes
 
 
 def test_e4_a_requirement_the_model_skipped_is_missing_by_code() -> None:

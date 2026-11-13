@@ -210,7 +210,7 @@ class TestJobsShow:
         shell.script(extraction(), said)
         shell.run("assess", "1")
         shown = shell.run("jobs", "show", "1", "--text")
-        assert "r4   nice  partial  Experience with Kubernetes" in shown
+        assert "r4   nice  missing  Experience with Kubernetes" in shown
         assert "lowered from met by code: no fact shows: Kubernetes" in shown
         assert "What we ask for" in shown
 
