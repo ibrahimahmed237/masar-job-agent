@@ -38,7 +38,7 @@ The assess step returns, for each requirement, a verdict and fact ids. `check_ev
 |---|---|---|
 | E1 | A fact id that is not in the career file | Removed from the evidence (`EVIDENCE-UNKNOWN-FACT`) |
 | E2 | `met` or `partial` with no evidence left | `missing` (`EVIDENCE-NONE`) |
-| E3 | The requirement names skills | The person's facts that have those skills are added to the evidence. `met` stays only if the person has one of the skills (all of them when `all_skills`); else it becomes `partial` when some evidence is left (`EVIDENCE-SKILL`) |
+| E3 | The requirement names skills | The person's facts that have those skills are added to the evidence. `met` stays only if the person has one of the skills (all of them when `all_skills`). With some of the skills it becomes `partial`. With none of them it becomes `missing`: the model said something that code can see is false, and nothing of it stands (`EVIDENCE-SKILL`). A `partial` from the model for a skill the person lacks stays: "something close" is a judgement, and it is never more than partial |
 | E4 | A requirement the model did not assess | `missing`, by code (`EVIDENCE-NOT-ASSESSED`) |
 | E5 | An assessment for a requirement that does not exist, or a second one for the same requirement | Ignored (`EVIDENCE-UNKNOWN-REQUIREMENT`) |
 | E6 | A note longer than 300 characters | Cut |

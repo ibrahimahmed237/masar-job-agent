@@ -7,9 +7,9 @@ Where the work stands right now. This file is updated after every milestone.
 | | |
 |---|---|
 | **Phase** | Build |
-| **Done** | Design; M0 to M6 |
-| **In progress** | M7 — Evaluations |
-| **Next** | M8 — Hardening and final review |
+| **Done** | Design; M0 to M7 |
+| **In progress** | M8 — Hardening and final review |
+| **Next** | — |
 
 See the milestones in [PLAN.md](PLAN.md).
 
@@ -25,7 +25,7 @@ See the milestones in [PLAN.md](PLAN.md).
 | M4 | Agent | Done | [002](../reviews/002-m4-agent.md) |
 | M5 | Storage and sources | Done | [003](../reviews/003-m5-adapters.md) |
 | M6 | CLI and MCP server | Done | [004](../reviews/004-m6-interfaces.md) |
-| M7 | Evaluations | Not started | |
+| M7 | Evaluations | Done | [005](../reviews/005-m7-evaluation.md) |
 | M8 | Hardening | Not started | |
 
 ## Decisions
@@ -56,3 +56,4 @@ See the milestones in [PLAN.md](PLAN.md).
 | 2026-11-13 | M4 done: model session, prompts, the intake and tailor graphs, pause and resume from SQLite. 316 tests. |
 | 2026-11-13 | M5 done: SQLite store, checkpointer, Greenhouse, Lever and Ashby clients, OpenAI-compatible and Anthropic clients, files, settings. |
 | 2026-11-13 | M6 done: use cases, the `masar` command line, the `masar-mcp` server. |
+| 2026-11-13 | M7 done: four evaluation sets, scoring, `masar eval`. The claims set runs with no model and has a committed result; the other three wait for a model key. |

@@ -26,7 +26,7 @@ Two thin hosts over `masar.app`. Neither contains a rule.
 | `masar today` | What needs attention | No |
 | `masar runs list`, `show <id>` | The trace of a run: steps, tokens, time | No |
 | `masar check --facts id,id [--file F] [--job ID] [--lang L]` | Runs the claim checks on a text | No |
-| `masar eval <set>` | Runs an evaluation set and saves the result | Depends on the set |
+| `masar eval <set> [--judge] [--no-save]` | Runs an [evaluation set](evaluation.md) and saves the result. Its tokens do not count toward the daily limit | `claims`: no. The others, and `--judge`: yes |
 
 Rules that are in the use cases, so that no host can leave them out:
 

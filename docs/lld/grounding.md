@@ -44,9 +44,10 @@ Before anything is looked for, the job's own title and company name are masked i
 |---|---|
 | Skills | The skill matcher of the [domain](domain.md#skills), with the lexicon: the person's skills, the job's skills, the built-in table |
 | Product-like names | Tokens that are written like a name of a product or a technology and are not in the lexicon: all capitals with 2 to 6 characters (`AWS`, `ETL`), capitals or digits inside the word (`GraphQL`, `gRPC`, `OAuth2`, `3x`), or a dot between two words (`socket.io`). `-` and `/` split tokens, so `AI-powered` is checked as `AI`. Everyday short forms are allowed (`API`, `UI`, `CV`, `KSA`, `B2B`, …). This catches a technology that no list knows |
+| Names | A capitalized word that does not begin a sentence, and is not a month or a weekday: "at Google", "on Qdrant", "in Berlin". It must be in the cited facts (their text, employer, role or skills), or be a language the career file lists. In a plain block it must be in the posting. The first word of a sentence is not judged this way: every sentence starts with a capital |
 | Numbers | Digits in Latin or Arabic-Indic form, with `%`, `+`, `k`, `x`, decimal points and ranges; and the number words `dozen`, `decade`, `hundred`, `thousand`, `million`, and "two … fifteen" directly before "year". Digits inside a word (`S3`, `EC2`) and inside a matched skill are not numbers |
 | Organizations | The `org` names of the career file, as whole phrases, case folded |
-| Seniority and ownership words | `senior`, `lead`, `led`, `leading`, `principal`, `staff`, `head`, `manager`, `managed`, `managing`, `director`, `architect`, `expert`, `chief`, `founder`, `co-founder`, and the Arabic `قائد`, `قدت`, `أدرت`, `مدير`, `خبير`, `كبير` |
+| Seniority and ownership words | `senior`, `principal`, `led`, `lead` in a title (`tech lead`, `lead engineer`), `head of`, `headed`, `manager`, `managed`, `director`, `architect`, `expert`, `chief`, `founder`, `owned`, `owner`, `ownership`, `responsible for`, `in charge of`, `supervised`, `mentored`, and the Arabic `قائد`, `قدت`, `أدرت`, `مدير`, `خبير`, `كبير`, `أشرفت`, `مسؤول عن`. Each as a whole word |
 
 A product-like name "is in a fact" when the same token, case folded, is in the fact's text, its skills, its organization or its role.
 
@@ -54,7 +55,12 @@ A number "is in a fact" when the same number, normalized (`93%` = `93`, `٩٣` =
 
 The person's years of experience, rounded down, may be stated in any claim, but only as years: "5 years", "5+ years of", "five years", "5 سنوات". The same digit elsewhere ("5 times faster") is a number like any other.
 
-What these checks do not see: a product with an ordinary capitalized name that is in no list and not asked for by the posting ("Temporal"). The posting's own skills are always in the lexicon, so the claim a model is most tempted to make, "I know what you ask for", is covered.
+What these checks do not see:
+
+- A name that begins a sentence and is in no list ("Careem uses the service I built").
+- A claim that names nothing: "the whole company depends on it", "customers were much happier". That is the judge's work, and a document that was not judged says so.
+
+The posting's own skills are always in the lexicon, so the claim a model is most tempted to make, "I know what you ask for", is covered. The [claims set](evaluation.md) measures all of this.
 
 ### Limits
 
