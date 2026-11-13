@@ -27,7 +27,7 @@ from masar.domain.job import MAX_REQUIREMENTS, MIN_QUOTE, Job
 from masar.domain.matching import Assessment
 from masar.ports.model import Message
 
-PROMPT_VERSION = "2026-11-13.1"
+PROMPT_VERSION = "2026-11-13.2"
 
 MAX_POSTING_CHARS = 30_000
 
@@ -114,7 +114,7 @@ Return one JSON object and nothing else:
 {{"assessments": [{{"requirement": "r1", "verdict": "met | partial | missing", "evidence": ["fact-id"], "note": "..."}}]}}"""
 
 _CLAIM_RULES = """- Write only what the given facts say. Rewording is fine. Adding is not.
-- A technology, a product name, a number, an employer, or a word of rank or ownership (led, managed, owned, senior, architect, expert, ...) may be in a block only when it is in the text or the skills of a fact that the block cites.
+- A technology, a name of any kind (a product, a company, a place), a number, an employer, or a word of rank or ownership (led, managed, owned, responsible for, senior, architect, expert, ...) may be in a block only when it is in the text or the skills of a fact that the block cites.
 - Every block that says anything about the candidate has kind "claim" and lists, in "facts", the ids of the facts it rests on.
 - A block is one line of plain text: no line breaks, links, markup, list marks or placeholders such as [Company]."""
 
