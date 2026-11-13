@@ -52,7 +52,9 @@ facts:
 | At least one fact | `CAREER-EMPTY` |
 | Unknown keys are refused, so a typo is found | `CAREER-FIELD` |
 
-Warnings, shown by `masar profile check` and never blocking: a fact with no skills, an experience with no numbers when `style.metrics` is on, fewer than three facts.
+Warnings, shown by `masar profile check` and never blocking: a fact with no skills (`CAREER-NO-SKILLS`), an experience with no number when `style.metrics` is on (`CAREER-NO-NUMBERS`), fewer than three facts (`CAREER-THIN`).
+
+One run reports every fault, each with its path, so the file is fixed in one pass.
 
 ### Derived values
 
@@ -69,7 +71,10 @@ A skill is compared by its **canonical name**, not by its spelling.
 - A built-in table maps aliases to canonical names: `Postgres`, `PostgreSQL`, `psql` → `postgresql`; `K8s` → `kubernetes`; `Node`, `NodeJS`, `Node.js` → `node.js`.
 - A name the table does not know is its own canonical name, lower-cased.
 - **Finding skills in a text** uses the lexicon of the moment: the person's skills, the job's skills, and the built-in table. A name matches as a whole token, also when it has symbols (`C#`, `C++`, `.NET`, `Node.js`).
-- **Ambiguous names** (`Go`, `R`, `C`, `Swift`, `Rust`, `Spring`, `Express`, `Dart`, `Flow`, `Chef`, `Puppet`, `Julia`, `Assembly`) match only in their exact spelling, so "go to market" is not the Go language.
+- **Names that are also everyday words** (`Go`, `Spring`, `React`, `Express`, `Swift`, `Rust`, `Flask`, `REST`, `Node`, and others marked in the table) match only in their exact spelling, so "go to market" and "a three-node cluster" are not skills.
+- **Single letters** (`C`, `R`) are skills when listed as skills, and are never looked for in running text: "Series C" and "R&D" are too common.
+- A name directly after a dot is a file ending, not a skill: `Main.java`, `server.go`.
+- Arabic letters next to a name do not hide it: `وKafka` is Kafka.
 
 ## Postings and jobs
 
@@ -104,7 +109,9 @@ The extract step's output is not trusted. `ground_job(candidate, posting_text)` 
 | The quote of a required language is in the text | The language is dropped (`JOB-LANGUAGE`) |
 | More than 40 requirements | The rest are dropped (`JOB-TOO-MANY`) |
 
-Text is compared after normalization: Unicode NFKC, case folded, runs of white space as one space, curly quotes as straight ones. Requirement ids are given by code (`r1`, `r2`, …) after grounding.
+Text is compared after normalization: Unicode NFKC, case folded, runs of white space as one space, curly quotes and long dashes as plain ones, Arabic-Indic digits as Western ones. A quote shorter than 12 characters is refused: it would be "in the posting" by accident. Requirement ids are given by code (`r1`, `r2`, …) after grounding.
+
+The job's title and company are taken from the posting, never from the model's reading. Words the model uses for seniority, employment or workplace that are not in the lists become `unknown`.
 
 ## Applications
 

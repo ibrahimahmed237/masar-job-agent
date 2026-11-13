@@ -25,6 +25,9 @@ All of this is code in `masar.domain`, with no model ([ADR-0007](../adr/0007-sco
 
 Rule of thumb: **missing information never blocks.** A posting that does not say is a warning.
 
+- When the workplace type is unknown, the job may be remote. The location rules (`COUNTRY_NOT_WANTED`, `NO_RELOCATION`, `SPONSORSHIP_NOT_OFFERED`) then give warnings with the same codes instead of blockers.
+- When the career file lists no languages, the language rule is skipped. When it lists no `work_authorization`, a job abroad gives `SPONSORSHIP_UNKNOWN`, whatever the posting says.
+
 A cheaper filter runs before any model call, on the posting's title alone: `title_matches(title, limits)` keeps a title that contains one of `title_keywords` (when not empty) and none of `title_exclude`.
 
 ## Evidence checks
@@ -39,6 +42,7 @@ The assess step returns, for each requirement, a verdict and fact ids. `check_ev
 | E4 | A requirement the model did not assess | `missing`, by code (`EVIDENCE-NOT-ASSESSED`) |
 | E5 | An assessment for a requirement that does not exist, or a second one for the same requirement | Ignored (`EVIDENCE-UNKNOWN-REQUIREMENT`) |
 | E6 | A note longer than 300 characters | Cut |
+| — | The model says `missing` for a requirement that names a skill the person has | The verdict stays `missing`, and a warning says which facts show the skill (`EVIDENCE-OVERLOOKED`) |
 
 Code only lowers a verdict. Nothing in this step can turn `missing` into `met`. It may add evidence that it can verify itself (E3). Each entry says who decided it (`model`, or `code` with the verdict it was lowered from).
 

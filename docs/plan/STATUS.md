@@ -6,10 +6,10 @@ Where the work stands right now. This file is updated after every milestone.
 
 | | |
 |---|---|
-| **Phase** | Design |
-| **Done** | Design written |
-| **In progress** | Design review |
-| **Next** | M0 — Foundation |
+| **Phase** | Build |
+| **Done** | Design; M0 to M3 (the domain) |
+| **In progress** | M4 — Agent |
+| **Next** | M5 — Storage and sources |
 
 See the milestones in [PLAN.md](PLAN.md).
 
@@ -17,11 +17,11 @@ See the milestones in [PLAN.md](PLAN.md).
 
 | # | Milestone | State | Review |
 |---|---|---|---|
-| — | Design | In review | |
-| M0 | Foundation | Not started | |
-| M1 | Career file and job model | Not started | |
-| M2 | Screen and score | Not started | |
-| M3 | Claim checks | Not started | |
+| — | Design | Done | [000](../reviews/000-design.md) |
+| M0 | Foundation | Done | [001](../reviews/001-m0-m3-domain.md) |
+| M1 | Career file and job model | Done | [001](../reviews/001-m0-m3-domain.md) |
+| M2 | Screen and score | Done | [001](../reviews/001-m0-m3-domain.md) |
+| M3 | Claim checks | Done | [001](../reviews/001-m0-m3-domain.md) |
 | M4 | Agent | Not started | |
 | M5 | Storage and sources | Not started | |
 | M6 | CLI and MCP server | Not started | |
@@ -51,3 +51,5 @@ See the milestones in [PLAN.md](PLAN.md).
 | Date | What happened |
 |---|---|
 | 2026-11-13 | Idea chosen. Design written. |
+| 2026-11-13 | Design reviewed: 16 fixes. |
+| 2026-11-13 | M0 to M3 done: tooling, career file, skills, job grounding, screen, evidence checks, score, claim checks, document assembly. 223 tests. |

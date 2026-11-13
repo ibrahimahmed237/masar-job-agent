@@ -10,7 +10,7 @@ A model writes a document as a list of blocks.
 |---|---|
 | `section` | Where the block goes: `summary`, `experience`, `project`, `body` |
 | `fact` | For `experience` and `project`: the fact this bullet belongs to |
-| `kind` | `claim`: says something about the candidate. `plain`: a greeting, interest in the company, a closing |
+| `kind` | `claim`: says something about the candidate. `plain`: a greeting, interest in the company, a closing. Anything that is not clearly `plain` is a claim, and a bullet under a job or a project is always a claim |
 | `text` | The sentence or bullet |
 | `facts` | The ids of the facts the text rests on |
 
@@ -34,6 +34,7 @@ A model writes a document as a list of blocks.
 | `FORMAT` | any | A line break, a URL, an HTML tag, or Markdown control characters at the start |
 | `WRONG_LANGUAGE` | any | An Arabic document's block has no Arabic letters, or an English document's block is mostly Arabic |
 | `TOO_LONG` | any | Over the limit for its place (see below) |
+| `WRONG_SECTION` | any | A section the document does not have: a `body` block in a CV, a `summary` in a letter |
 
 ### How each thing is found in a text
 
@@ -42,22 +43,30 @@ Before anything is looked for, the job's own title and company name are masked i
 | Thing | How |
 |---|---|
 | Skills | The skill matcher of the [domain](domain.md#skills), with the lexicon: the person's skills, the job's skills, the built-in table |
-| Product-like names | Tokens that are written like a name of a product or a technology and are not in the lexicon: all capitals with 2 to 6 characters (`AWS`, `ETL`), capitals or digits inside the word (`GraphQL`, `gRPC`, `OAuth2`), or a symbol inside (`Next.js`). A few everyday ones are allowed (`CV`, `OK`, `PS`). This catches a technology that no list knows |
+| Product-like names | Tokens that are written like a name of a product or a technology and are not in the lexicon: all capitals with 2 to 6 characters (`AWS`, `ETL`), capitals or digits inside the word (`GraphQL`, `gRPC`, `OAuth2`, `3x`), or a dot between two words (`socket.io`). `-` and `/` split tokens, so `AI-powered` is checked as `AI`. Everyday short forms are allowed (`API`, `UI`, `CV`, `KSA`, `B2B`, …). This catches a technology that no list knows |
 | Numbers | Digits in Latin or Arabic-Indic form, with `%`, `+`, `k`, `x`, decimal points and ranges; and the number words `dozen`, `decade`, `hundred`, `thousand`, `million`, and "two … fifteen" directly before "year". Digits inside a word (`S3`, `EC2`) and inside a matched skill are not numbers |
 | Organizations | The `org` names of the career file, as whole phrases, case folded |
 | Seniority and ownership words | `senior`, `lead`, `led`, `leading`, `principal`, `staff`, `head`, `manager`, `managed`, `managing`, `director`, `architect`, `expert`, `chief`, `founder`, `co-founder`, and the Arabic `قائد`, `قدت`, `أدرت`, `مدير`, `خبير`, `كبير` |
 
 A product-like name "is in a fact" when the same token, case folded, is in the fact's text, its skills, its organization or its role.
 
-A number "is in a fact" when the same number, normalized (`93%` = `93 %`, `٩٣` = `93`), is in the fact's text, or is a year of its period. The person's years of experience, rounded down, are always allowed, also as `N+`.
+A number "is in a fact" when the same number, normalized (`93%` = `93`, `٩٣` = `93`, `10k` = `10000`), is in the fact's text, or is a year of its period.
+
+The person's years of experience, rounded down, may be stated in any claim, but only as years: "5 years", "5+ years of", "five years", "5 سنوات". The same digit elsewhere ("5 times faster") is a number like any other.
+
+What these checks do not see: a product with an ordinary capitalized name that is in no list and not asked for by the posting ("Temporal"). The posting's own skills are always in the lexicon, so the claim a model is most tempted to make, "I know what you ask for", is covered.
 
 ### Limits
 
 | Document | Limits |
 |---|---|
-| CV | Up to 3 summary blocks; up to 4 bullets per fact; a bullet up to 240 characters |
-| Cover letter | 2 to 6 body blocks; 1,800 characters in total |
+| CV | Up to 3 summary blocks; up to 4 bullets per fact; a bullet or summary block up to 240 characters |
+| Cover letter | 2 to 6 body blocks; a block up to 700 characters; 1,800 characters in total |
 | Outreach message | 1 to 4 body blocks; 700 characters in total |
+
+A leading list mark (`- `) in a block is removed when the draft is read: it is habit, not content.
+
+Language: for an Arabic document, at least half of a block's letters must be Arabic, after the names of technologies are set aside. For an English document, at most a fifth may be Arabic.
 
 ## What the code checks cannot see
 
@@ -81,6 +90,8 @@ A false sentence with no skill, number, employer or title in it: "I enjoy mentor
 | Greeting and signature | Code: the company's name and the person's name |
 
 A block that still has a violation after the repairs is **dropped** and listed with its reason. An experience fact with no bullet left keeps its heading and its own text from the career file, which is true by definition. A cover letter or message with fewer blocks than its minimum is a failed draft, not a short one.
+
+A CV always shows the whole history: every experience fact, grouped by employer, role and period, newest first, then projects and education. The model improves the wording of what it was given; it cannot leave a job out.
 
 ## Manual edits
 
