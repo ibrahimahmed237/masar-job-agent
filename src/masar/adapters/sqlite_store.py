@@ -418,7 +418,10 @@ class SqliteStore:
         return self._run(row) if row else None
 
     def list_runs(self, limit: int = 20) -> list[RunRecord]:
-        return [self._run(row) for row in self._all("SELECT * FROM runs ORDER BY started_at DESC, id LIMIT ?", limit)]
+        return [
+            self._run(row)
+            for row in self._all("SELECT * FROM runs ORDER BY started_at DESC, rowid DESC LIMIT ?", limit)
+        ]
 
     def run_steps(self, run_id: str) -> list[RunStep]:
         rows = self._all("SELECT * FROM run_steps WHERE run_id = ? ORDER BY ordinal", run_id)

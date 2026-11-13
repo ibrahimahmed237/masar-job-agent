@@ -3,22 +3,30 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from masar.domain.career import Career, checksum, parse_career
+from masar.domain.career import checksum, parse_career
 from masar.domain.findings import Finding, Result
 from masar.domain.job import Source
+from masar.ports.files import CareerFile, FileProblem
 from masar.ports.sources import Board
 
+__all__ = [
+    "CareerFile",
+    "FileProblem",
+    "LocalFiles",
+    "blocks_as_yaml",
+    "export_document",
+    "export_name",
+    "load_career",
+    "load_watchlist",
+    "read_blocks",
+]
+
 MAX_FILE_BYTES = 1_000_000
-
-
-class FileProblem(Exception):
-    """A file that cannot be read as what it should be. The message is for the person."""
 
 
 def read_yaml(path: Path) -> tuple[Any, bytes]:
@@ -37,12 +45,6 @@ def read_yaml(path: Path) -> tuple[Any, bytes]:
         where = f", line {mark.line + 1}" if mark is not None else ""
         problem = getattr(error, "problem", None) or "not valid YAML"
         raise FileProblem(f"{path}{where}: {problem}") from None
-
-
-@dataclass(frozen=True)
-class CareerFile:
-    result: Result[Career]
-    checksum: str
 
 
 def load_career(path: Path) -> CareerFile:
@@ -93,6 +95,22 @@ def load_watchlist(path: Path) -> Result[tuple[Board, ...]]:
     return Result(tuple(boards))
 
 
+def blocks_as_yaml(blocks: list[dict[str, Any]]) -> str:
+    """A draft's blocks as a file the person can edit and give back with ``masar drafts edit``."""
+    header = (
+        "# The blocks of a draft. Change the text, remove a block, or add one, then run:\n"
+        "#   masar drafts edit <id> --file <this file>\n"
+        '# A block that says something about you names, in "facts", the facts of your career file it rests on.\n'
+    )
+    return header + yaml.safe_dump({"blocks": blocks}, allow_unicode=True, sort_keys=False, width=100)
+
+
+def read_blocks(path: Path) -> Any:
+    """The blocks of an edited draft, as written. Their shape is checked by the flow, not here."""
+    data, _ = read_yaml(path)
+    return data.get("blocks") if isinstance(data, dict) else data
+
+
 def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.casefold()).strip("-")[:40] or "document"
 
@@ -112,3 +130,17 @@ def export_document(folder: Path, name: str, markdown: str, *, force: bool = Fal
     except OSError as error:
         raise FileProblem(f"{target}: {error.strerror or error}") from None
     return target
+
+
+class LocalFiles:
+    """The career file and the watchlist of one Masar folder, read again at every call."""
+
+    def __init__(self, career_path: Path, watchlist_path: Path) -> None:
+        self._career = career_path
+        self._watchlist = watchlist_path
+
+    def career(self) -> CareerFile:
+        return load_career(self._career)
+
+    def watchlist(self) -> Result[tuple[Board, ...]]:
+        return load_watchlist(self._watchlist)

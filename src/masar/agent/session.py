@@ -9,7 +9,16 @@ from dataclasses import dataclass
 from typing import Any, cast
 
 from masar.ports.clock import Clock
-from masar.ports.model import ChatModel, Message
+from masar.ports.model import ChatModel, ChatResult, Message, ModelUnavailable
+
+
+class NoModel:
+    """Stands where a model would, for a step that asks none: deciding a paused draft."""
+
+    name = "none"
+
+    def complete(self, messages: Sequence[Message], max_output_tokens: int) -> ChatResult:
+        raise ModelUnavailable("this step asks no model")
 
 
 class BudgetExceeded(Exception):

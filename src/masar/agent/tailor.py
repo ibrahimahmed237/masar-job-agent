@@ -365,3 +365,9 @@ def resume_tailor(graph: Any, run_id: str, decision: Mapping[str, Any]) -> Tailo
     if not is_paused(graph, run_id):
         raise NotPaused(run_id)
     return _outcome(graph.invoke(Command(resume=dict(decision)), _config(run_id)))
+
+
+def snapshot(graph: Any, run_id: str) -> TailorOutcome | None:
+    """How a run stands in the checkpointer, or None when the checkpointer does not know it."""
+    values = graph.get_state(_config(run_id)).values
+    return _outcome(values) if values else None

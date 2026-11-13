@@ -12,7 +12,7 @@ import yaml
 
 from masar.domain.career import Career, parse_career
 
-EXAMPLE = Path(__file__).resolve().parents[2] / "examples" / "career.yaml"
+EXAMPLE = Path(__file__).resolve().parents[2] / "src" / "masar" / "templates" / "career.yaml"
 TODAY = date(2026, 11, 13)
 
 

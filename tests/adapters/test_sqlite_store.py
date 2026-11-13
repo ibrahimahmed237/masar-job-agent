@@ -352,6 +352,11 @@ class TestRuns:
         assert [r.id for r in store.list_runs(limit=3)] == ["run-4", "run-3", "run-2"]
         assert store.get_run("nope") is None
 
+    def test_runs_started_in_the_same_second_are_listed_last_started_first(self, store: SqliteStore) -> None:
+        for name in ("zebra", "apple", "mango"):
+            store.start_run(name, "intake", None, AT)
+        assert [r.id for r in store.list_runs()] == ["mango", "apple", "zebra"]
+
     def test_a_run_id_is_used_once(self, store: SqliteStore) -> None:
         store.start_run("run-1", "intake", None, AT)
         with pytest.raises(sqlite3.IntegrityError):
