@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.env
+
+# Personal data never goes into the repo: your career file, your database, your drafts.
+/career.yaml
+/watchlist.yaml
+*.private.yaml
+.masar/
+out/
