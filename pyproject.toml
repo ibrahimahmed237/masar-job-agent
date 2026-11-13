@@ -51,6 +51,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "src/masar/cli/*" = ["B008"] # Typer declares options as default arguments
+"tests/*" = ["E501"]         # expected documents are written out in full
 
 [tool.mypy]
 strict = true

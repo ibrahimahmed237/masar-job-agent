@@ -1,0 +1,87 @@
+# An example career file, for an invented person. Copy it with `masar init` and write your own.
+#
+# Masar only ever says about you what is written here. A fact is one thing that may be claimed:
+# a job, a project, a degree. Give each a short id. Documents point at facts by id.
+
+person:
+  name: Sara Al-Najjar
+  headline: Backend engineer
+  email: sara@example.com
+  phone: "+20 100 000 0000"
+  links:
+    - https://github.com/sara-example
+  location: { city: Cairo, country: EG }
+  languages:
+    - { code: ar, level: native }
+    - { code: en, level: professional }
+  work_authorization: [EG]          # countries where you need no visa sponsorship
+
+limits:
+  countries: [SA, AE, EG]           # where you want to work; leave empty for anywhere
+  remote: true                      # you accept remote jobs
+  relocation: true                  # you accept moving for an on-site job
+  employment: [full-time]           # leave empty for any
+  years_gap_allowed: 2              # a posting may ask this many years more than you have
+  exclude_companies: []
+  title_keywords: [backend, software engineer, platform engineer, ai engineer]
+  title_exclude: [intern, sales, manager]
+
+style:
+  metrics: true                     # false: no numbers in your documents
+
+facts:
+  - id: acme-allocation
+    kind: experience
+    org: Acme Retail
+    role: Software Engineer
+    period: { from: 2023-03, to: present }
+    text: Built an event-driven inventory allocation service that raised store availability to 93%.
+    skills: [NestJS, TypeScript, Kafka, PostgreSQL]
+
+  - id: acme-receiving
+    kind: experience
+    org: Acme Retail
+    role: Software Engineer
+    period: { from: 2023-03, to: present }
+    text: Built a receiving queue over WhatsApp with OCR of delivery notes, cutting driver check-in time by 80%.
+    skills: [Node.js, Redis, BullMQ, OCR, OpenAI]
+
+  - id: acme-support-agent
+    kind: experience
+    org: Acme Retail
+    role: Software Engineer
+    period: { from: 2023-03, to: present }
+    text: Built a multi-agent customer support assistant that answers order questions and hands over to people when unsure.
+    skills: [Python, LangGraph, LangChain, FastAPI]
+
+  - id: nimbus-apis
+    kind: experience
+    org: Nimbus Commerce
+    role: Backend Engineer
+    period: { from: 2021-06, to: 2023-02 }
+    text: Maintained GraphQL and REST APIs for product listings and moved hot paths to gRPC.
+    skills: [Node.js, GraphQL, REST, gRPC, MySQL]
+
+  - id: nimbus-payments
+    kind: experience
+    org: Nimbus Commerce
+    role: Backend Engineer
+    period: { from: 2021-06, to: 2023-02 }
+    text: Integrated Stripe and PayPal for stores in 4 currencies.
+    skills: [Stripe, PayPal, Node.js]
+
+  - id: ledger-project
+    kind: project
+    text: Wrote an open-source double-entry ledger service with idempotent postings and a full test suite.
+    skills: [Java, Spring Boot, PostgreSQL, Docker]
+
+  - id: tooling
+    kind: skill
+    text: Daily tools for building, shipping and watching services.
+    skills: [Git, Docker, Linux, GitHub Actions, AWS, Datadog]
+
+  - id: bsc
+    kind: education
+    org: Cairo University
+    period: { from: 2017-09, to: 2021-06 }
+    text: BSc in Computer Science.
