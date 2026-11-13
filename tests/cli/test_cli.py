@@ -464,3 +464,56 @@ class TestCheck:
         shell.run("check", "--facts", "acme-allocation", "--job", "1", stdin="At Tamween I would use my work on Kafka.")
         output = shell.run("check", "--facts", "acme-allocation", "--lang", "ar", stdin="I built it on Kafka.", code=NO)
         assert "WRONG_LANGUAGE" in output
+
+
+class TestEval:
+    SETS = str(Path(__file__).resolve().parents[2] / "evals")
+
+    def test_the_claims_set_runs_without_a_model_and_writes_its_result(self, shell: Shell, tmp_path: Path) -> None:
+        out = tmp_path / "results"
+        output = shell.run("eval", "claims", "--sets", self.SETS, "--out", str(out))
+        assert "| false skill caught by code | 8 of 8 | 100% | higher |" in output
+        assert "| Model | none: code only |" in output
+        written = out / "claims-2026-11-13.md"
+        assert f"written {written}" in output
+        assert written.read_text(encoding="utf-8").startswith("# Evaluation: claims\n")
+        assert shell.model.calls == []
+
+    def test_json_and_no_save(self, shell: Shell, tmp_path: Path) -> None:
+        out = tmp_path / "results"
+        data = shell.json("eval", "claims", "--sets", self.SETS, "--out", str(out), "--no-save")
+        assert (data["set"], data["model"], data["tokens"], data["path"]) == ("claims", None, 0, None)
+        assert {"name": "honest blocks flagged by code", "hits": 0, "total": 24, "lower_is_better": True} in data[
+            "measures"
+        ]
+        assert not out.exists()
+
+    def test_a_set_that_asks_a_model_runs_with_the_configured_one(self, shell: Shell, tmp_path: Path) -> None:
+        from tests.app.test_evaluation import perfect_extraction
+
+        shell.script(*[perfect_extraction] * 4)
+        output = shell.run("eval", "extraction", "--sets", self.SETS, "--out", str(tmp_path))
+        assert "| expected requirements found (recall) | 17 of 17 | 100% | higher |" in output
+        assert "| Model | scripted |" in output
+        assert (tmp_path / "extraction-2026-11-13.md").exists()
+        assert shell.json("config")["tokens_today"] == 0  # an evaluation does not count toward the day
+
+    def test_claims_with_the_judge_gets_its_own_file(self, shell: Shell, tmp_path: Path) -> None:
+        shell.script(*[{"verdicts": [{"block": 0, "supported": True}]}] * 100)
+        output = shell.run("eval", "claims", "--judge", "--sets", self.SETS, "--out", str(tmp_path))
+        assert "# Evaluation: claims with the judge" in output
+        assert (tmp_path / "claims-judge-2026-11-13.md").exists()
+
+    def test_what_cannot_run_exits_2(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        bare = Shell(tmp_path / "masar", monkeypatch, model=False)
+        assert "asks a model" in bare.run("eval", "extraction", "--sets", self.SETS, "--no-save", code=CANNOT)
+        assert "asks a model" in bare.run("eval", "claims", "--judge", "--sets", self.SETS, "--no-save", code=CANNOT)
+        assert "no such file" in bare.run("eval", "claims", "--sets", str(tmp_path / "nowhere"), code=CANNOT)
+        (tmp_path / "poetry.json").write_text("{}", encoding="utf-8")
+        assert "there is no set 'poetry'" in bare.run("eval", "poetry", "--sets", str(tmp_path), code=CANNOT)
+
+    def test_a_provider_that_is_down_stops_the_evaluation_with_2(self, shell: Shell, tmp_path: Path) -> None:
+        shell.script(ModelUnavailable("HTTP 503"))
+        output = shell.run("eval", "assessment", "--sets", self.SETS, "--out", str(tmp_path), code=CANNOT)
+        assert "the evaluation stopped: HTTP 503" in output
+        assert list(tmp_path.glob("assessment-*")) == []

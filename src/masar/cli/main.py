@@ -17,14 +17,21 @@ from typing import Annotated, Any, NoReturn
 import typer
 
 from masar import __version__
+from masar.adapters.clock import SystemClock
+from masar.adapters.evalsets import example_career, load_set, write_result
 from masar.adapters.files import blocks_as_yaml, export_document, export_name, read_blocks
+from masar.adapters.llm import build_model
 from masar.adapters.settings import SettingsError, load_settings
 from masar.adapters.wiring import open_masar
+from masar.agent.prompts import PROMPT_VERSION
+from masar.agent.session import ModelSession
 from masar.app import views
 from masar.app.errors import AppError, CareerInvalid, Refused
+from masar.app.evaluation import evaluate, to_markdown
 from masar.app.service import Masar
 from masar.domain.claims import DocumentKind
 from masar.ports.files import FileProblem
+from masar.ports.model import ModelUnavailable
 
 app = typer.Typer(
     no_args_is_help=True,
@@ -605,3 +612,47 @@ def check(
     emit(as_json, views.violations(found), lines)
     if found:
         raise typer.Exit(NO)
+
+
+# Evaluations
+
+
+@app.command("eval")
+def evaluate_set(
+    name: Annotated[str, typer.Argument(help="claims, extraction, assessment or injection.")],
+    sets: Annotated[Path, typer.Option("--sets", help="The folder with the sets.")] = Path("evals"),
+    out: Annotated[Path, typer.Option("--out", help="The folder for the result file.")] = Path("evals/results"),
+    judge: Annotated[
+        bool, typer.Option("--judge", help="For claims: also ask the model to judge what code lets through.")
+    ] = False,
+    save: Annotated[bool, typer.Option("--save/--no-save", help="Write the result file.")] = True,
+    as_json: Json = False,
+) -> None:
+    """Runs an evaluation set and writes its result. The sets are about the invented person of the example
+    career file, not about you. The tokens of an evaluation do not count toward the daily limit."""
+    try:
+        settings = load_settings(os.environ)
+        model = OVERRIDES.get("model") or (build_model(settings) if settings.has_model else None)
+        clock = OVERRIDES.get("clock") or SystemClock()
+        sessions = (lambda: ModelSession(model, clock, PROMPT_VERSION)) if model is not None else None
+        day = clock.now().date()
+        report = evaluate(name, load_set(sets, name), example_career(), day, sessions, judge=judge)
+        markdown = to_markdown(report, day)
+        target = write_result(out, name + ("-judge" if judge else ""), day, markdown) if save else None
+    except ModelUnavailable as error:
+        fail(f"the evaluation stopped: {error}")
+    except (AppError, FileProblem, SettingsError) as error:
+        fail(str(error))
+    data = {
+        "set": report.set_name,
+        "cases": report.cases,
+        "model": report.model,
+        "tokens": report.tokens,
+        "measures": [
+            {"name": m.name, "hits": m.hits, "total": m.total, "lower_is_better": m.lower_is_better}
+            for m in report.metrics
+        ],
+        "notes": report.notes,
+        "path": str(target) if target else None,
+    }
+    emit(as_json, data, [markdown.rstrip("\n"), *(["", f"written {target}"] if target else [])])
