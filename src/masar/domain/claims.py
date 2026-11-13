@@ -18,6 +18,7 @@ from typing import Any
 from masar.domain.career import Career, Fact, FactKind
 from masar.domain.findings import Finding, Result
 from masar.domain.job import Job
+from masar.domain.languages import LANGUAGE_NAMES
 from masar.domain.skills import SkillLexicon
 from masar.domain.text import arabic_share, normalize, western_digits
 
@@ -98,12 +99,19 @@ _TITLE_WORDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
         ("expert", r"\bexpert\b"),
         ("chief", r"\bchief\b"),
         ("founder", r"\b(?:co-?)?founder\b"),
+        ("owned", r"\bowned\b|\bowner(?:ship)?\b"),
+        ("responsible for", r"\b(?:responsible\s+for|in\s+charge\s+of)\b"),
+        ("headed", r"\bheaded\b"),
+        ("supervised", r"\bsupervis(?:ed|or)\b"),
+        ("mentored", r"\bmentor(?:ed|ing)?\b"),
         ("قائد", r"(?<![ء-ي])قائد(?![ء-ي])"),
         ("قدت", r"(?<![ء-ي])قدت(?![ء-ي])"),
         ("أدرت", r"(?<![ء-ي])أدرت(?![ء-ي])"),
         ("مدير", r"(?<![ء-ي])مدير(?![ء-ي])"),
         ("خبير", r"(?<![ء-ي])خبير(?![ء-ي])"),
         ("كبير", r"(?<![ء-ي])كبير(?![ء-ي])"),
+        ("أشرفت", r"(?<![ء-ي])أشرفت(?![ء-ي])"),
+        ("مسؤول عن", r"(?<![ء-ي])مسؤولة?\s+عن(?![ء-ي])"),
     )
 )
 
@@ -154,6 +162,15 @@ _PLAIN_TERMS = frozenset(
         "am",
         "pm",
     ]
+)
+
+# Capitalized words that are not names of anything.
+_PLAIN_NAMES = frozenset(
+    {
+        *("january", "february", "march", "april", "may", "june", "july"),
+        *("august", "september", "october", "november", "december"),
+        *("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"),
+    }
 )
 
 # A token for names: letters, digits and the symbols names carry. "-" and "/" split tokens ("AI-powered", "TCP/IP").
@@ -331,7 +348,9 @@ def check_block(block: Block, index: int, context: ClaimContext) -> list[Violati
     elif hits:
         add("PLAIN_BLOCK_CLAIMS", f"names a skill: {hits[0].surface}")
 
-    for term in _terms(masked, spans):
+    # An employer of the person is judged by its own rule, further down.
+    org_spans = [m.span() for org in career.organizations for m in _phrase(org).finditer(masked)]
+    for term in _terms(masked, [*spans, *org_spans]):
         key = _term_key(term)
         if block.is_claim:
             if key not in support.tokens:
@@ -389,6 +408,9 @@ class _Support:
         self.tokens = {_term_key(t) for t in _TOKEN.findall(self.text)} | {
             _term_key(t) for f in facts for s in f.skills for t in _TOKEN.findall(s)
         }
+        # The languages the person speaks are in the career file, and may be named.
+        spoken = (LANGUAGE_NAMES["en"].get(language.code, "") for language in context.career.person.languages)
+        self.tokens |= {_term_key(name) for name in spoken if name}
         self.numbers = _numbers(self.text, ()) | {str(year) for f in facts if f.period for year in f.period.years}
         self.orgs = {normalize(f.org) for f in facts if f.org}
 
@@ -427,12 +449,28 @@ def _is_product_like(token: str) -> bool:
     return token.endswith(("++", "#"))
 
 
-def _terms(text: str, skill_spans: Iterable[tuple[int, int]]) -> list[str]:
-    """Product-like names in a text, outside the skills already found, each once."""
+def _is_name(token: str) -> bool:
+    """True for a word written as a name: a capital, then small letters. "Google", "Qdrant", "Riyadh"."""
+    return len(token) > 1 and token[0].isupper() and token[1:].islower() and token.casefold() not in _PLAIN_NAMES
+
+
+def _terms(text: str, known_spans: Iterable[tuple[int, int]]) -> list[str]:
+    """The names in a text that need a source, each once, outside the spans that other checks cover.
+
+    A name is a token written like a product ("AWS", "GraphQL", "Next.js"), or a capitalized word that
+    does not begin a sentence ("at Google", "with Qdrant"). The first word of a sentence is capitalized
+    whatever it is, so it is only a name when it is written like a product.
+    """
+    blanked = _blank(text, known_spans)
     seen: dict[str, str] = {}
-    for token in _TOKEN.findall(_blank(text, skill_spans)):
-        token = token.rstrip(".-/_")
-        if token and _is_product_like(token):
+    for match in _TOKEN.finditer(blanked):
+        token = match.group(0).rstrip(".-/_")
+        if not token:
+            continue
+        # What stands before the word, without the quote or bracket that may open it.
+        before = text[: match.start()].rstrip().rstrip("\"'“‘([").rstrip()
+        starts_sentence = not before or before[-1] in ".!?"
+        if _is_product_like(token) or (_is_name(token) and not starts_sentence):
             seen.setdefault(_term_key(token), token)
     return list(seen.values())
 

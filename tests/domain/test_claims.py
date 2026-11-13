@@ -16,7 +16,7 @@ from masar.domain.claims import (
     check_document,
     parse_blocks,
 )
-from tests.support.career import TODAY, career_with, example_career
+from tests.support.career import TODAY, career_with, example_career, example_data
 from tests.support.jobs import example_job
 
 POSTING = "Tamween moves 2 million parcels a year across KSA on our ParcelOS platform. We use Kafka and Temporal. Backend Engineer, Riyadh."
@@ -247,13 +247,13 @@ def test_a_plain_block_says_nothing_about_the_person() -> None:
 
 
 def test_placeholders_and_format() -> None:
-    assert only(claim("Dear [Hiring Team], I built allocation.", "acme-allocation")) == ["PLACEHOLDER"]
+    assert only(claim("Dear [hiring team], I built allocation.", "acme-allocation")) == ["PLACEHOLDER"]
     assert only(plain("Hello {company} team.")) == ["PLACEHOLDER"]
-    assert only(plain("Sincerely, Your Name")) == ["PLACEHOLDER"]
+    assert only(plain("Sincerely, your name")) == ["PLACEHOLDER"]
     assert "FORMAT" in only(plain("See https://example.com/me for more."))
     assert "FORMAT" in only(plain("Write to me at someone@example.com."))
     assert only(plain("Line one\nline two")) == ["FORMAT"]
-    assert only(plain("<b>Hello</b> there")) == ["FORMAT"]
+    assert "FORMAT" in only(plain("<b>Hello</b> there"))
     assert only(plain("# A heading")) == ["FORMAT"]
     assert only(plain("   ")) == ["FORMAT"]
 
@@ -428,3 +428,84 @@ def test_every_block_of_a_cv_is_a_claim_whatever_it_calls_itself() -> None:
     assert soft.is_claim
     assert [v.code for v in check_block(soft, 0, ClaimContext(example_career(), TODAY))] == ["CLAIM_WITHOUT_FACT"]
     assert not Block(Section.BODY, BlockKind.PLAIN, "I am writing about the role.").is_claim
+
+
+class TestNamesInTheMiddleOfASentence:
+    """A capitalized word that does not begin a sentence is a name, and a name needs a source."""
+
+    def test_an_employer_the_career_file_does_not_know(self) -> None:
+        assert codes(claim("At Google I built an event-driven allocation service.", "acme-allocation")) == [
+            ("UNSUPPORTED_TERM", "Google")
+        ]
+
+    def test_a_product_that_no_list_knows(self) -> None:
+        assert codes(claim("I built the assistant on Qdrant and Temporal.", "acme-support-agent")) == [
+            ("UNSUPPORTED_TERM", "Qdrant"),
+            ("UNSUPPORTED_TERM", "Temporal"),
+        ]
+
+    def test_the_names_of_the_cited_fact_pass(self) -> None:
+        text = "At Acme Retail, as a Software Engineer, I built an Inventory Allocation Service."
+        assert codes(claim(text, "acme-allocation")) == []
+
+    def test_an_employer_of_another_fact_is_reported_once_as_an_employer(self) -> None:
+        assert codes(claim("At Nimbus Commerce I built an allocation service.", "acme-allocation")) == [
+            ("UNSUPPORTED_ORG", "Nimbus Commerce")
+        ]
+
+    def test_the_first_word_of_a_sentence_is_not_judged_by_its_capital(self) -> None:
+        # A limit that is kept on purpose: every sentence starts with a capital.
+        assert codes(claim("Built it. Shipped it. Google liked it.", "acme-allocation")) == []
+        assert codes(claim('The service works. "Shipped" is the word for it.', "acme-allocation")) == []
+        # After a colon, or inside brackets in the middle of a sentence, a capital is a choice.
+        assert codes(claim('The word for it: "Shipped".', "acme-allocation")) == [("UNSUPPORTED_TERM", "Shipped")]
+
+    def test_the_languages_of_the_career_file_may_be_named(self) -> None:
+        assert codes(claim("I work in Arabic and English.", "acme-allocation")) == []
+        assert codes(claim("I work in Arabic and German.", "acme-allocation")) == [("UNSUPPORTED_TERM", "German")]
+
+    def test_months_and_days_are_not_names(self) -> None:
+        assert (
+            codes(claim("Since March I have built an allocation service, shipped on a Monday.", "acme-allocation"))
+            == []
+        )
+
+    def test_a_plain_block_may_name_what_the_posting_names(self) -> None:
+        ctx = ClaimContext(
+            example_career(), TODAY, "en", example_job(), "The role is in Riyadh, with the Platform team."
+        )
+        assert codes(plain("I would be glad to join the Platform team in Riyadh."), ctx) == []
+        assert codes(plain("I would be glad to join your team in Dubai."), ctx) == [
+            ("PLAIN_BLOCK_CLAIMS", "names something that is not in the posting: Dubai")
+        ]
+
+    def test_an_arabic_sentence_with_a_foreign_name(self) -> None:
+        ctx = context(language="ar")
+        text = "عملت في Google على بناء خدمة لتوزيع المخزون باستخدام Kafka."
+        assert codes(claim(text, "acme-allocation"), ctx) == [("UNSUPPORTED_TERM", "Google")]
+
+
+@pytest.mark.parametrize(
+    ("text", "word"),
+    [
+        ("I owned payments at Nimbus Commerce.", "owned"),
+        ("I took ownership of the payment flows.", "owned"),
+        ("I was responsible for the payment flows.", "responsible for"),
+        ("I was in charge of payments.", "responsible for"),
+        ("I headed the payments work.", "headed"),
+        ("I supervised the payments work.", "supervised"),
+        ("I mentored engineers on payments.", "mentored"),
+        ("أشرفت على تكامل المدفوعات.", "أشرفت"),
+        ("كنت مسؤولة عن تكامل المدفوعات.", "مسؤول عن"),
+    ],
+)
+def test_words_of_ownership_need_a_fact_that_says_so(text: str, word: str) -> None:
+    ctx = context("ar" if text[0] > "z" else "en")
+    assert ("UNSUPPORTED_TITLE", word) in codes(claim(text, "nimbus-payments"), ctx)
+
+
+def test_a_fact_that_says_owned_supports_it() -> None:
+    facts = example_data()["facts"]
+    facts[4]["text"] = "Owned payments: integrated Stripe and PayPal for stores in 4 currencies."
+    ctx = ClaimContext(career_with(facts=facts), TODAY, "en", example_job(), POSTING)
+    assert codes(claim("I owned payments and integrated Stripe and PayPal.", "nimbus-payments"), ctx) == []

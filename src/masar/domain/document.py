@@ -10,6 +10,7 @@ from masar.domain.career import Career, Fact, FactKind, Period
 from masar.domain.claims import BODY_BLOCKS, Block, DocumentKind, Section, Violation
 from masar.domain.findings import Finding, Result
 from masar.domain.job import Job
+from masar.domain.languages import LANGUAGE_NAMES
 from masar.domain.skills import canonical
 
 _LABELS = {
@@ -36,27 +37,6 @@ _LABELS = {
         "dear": "فريق {company} المحترم،",
         "hello": "مرحبًا فريق {company}،",
         "sincerely": "مع خالص التحية،",
-    },
-}
-
-_LANGUAGE_NAMES = {
-    "en": {
-        "ar": "Arabic",
-        "en": "English",
-        "fr": "French",
-        "de": "German",
-        "es": "Spanish",
-        "tr": "Turkish",
-        "ur": "Urdu",
-    },
-    "ar": {
-        "ar": "العربية",
-        "en": "الإنجليزية",
-        "fr": "الفرنسية",
-        "de": "الألمانية",
-        "es": "الإسبانية",
-        "tr": "التركية",
-        "ur": "الأردية",
     },
 }
 
@@ -171,7 +151,7 @@ def _cv(blocks: tuple[Block, ...], career: Career, job: Job, labels: dict[str, s
         lines += [f"## {labels['skills']}", "", ", ".join(ordered), ""]
 
     if person.languages:
-        names = _LANGUAGE_NAMES["ar" if language == "ar" else "en"]
+        names = LANGUAGE_NAMES["ar" if language == "ar" else "en"]
         spoken = [
             names.get(lang.code, lang.code) + (f" ({lang.level})" if lang.level else "") for lang in person.languages
         ]

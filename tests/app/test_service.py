@@ -621,4 +621,9 @@ class TestEdges:
         text = "For the Senior Backend Engineer role I bring my work on Kafka."
         assert world.app.check_claims(text, ["acme-allocation"], posting_id=posting_id) == []
         without = world.app.check_claims(text, ["acme-allocation"])
-        assert [(v.code, v.detail) for v in without] == [("UNSUPPORTED_TITLE", "senior")]
+        # Without the job, "Senior Backend" are the person's words, and no fact says them.
+        assert [(v.code, v.detail) for v in without] == [
+            ("UNSUPPORTED_TERM", "Senior"),
+            ("UNSUPPORTED_TERM", "Backend"),
+            ("UNSUPPORTED_TITLE", "senior"),
+        ]
