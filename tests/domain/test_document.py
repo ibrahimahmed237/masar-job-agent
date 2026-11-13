@@ -65,7 +65,7 @@ Backend engineer who builds event-driven services. Comfortable from API design t
 
 ## Education
 
-- BSc in Computer Science. — Cairo University, 2017-09 – 2021-06
+- BSc in Computer Science — Cairo University, 2017-09 – 2021-06
 
 ## Skills
 
@@ -209,3 +209,16 @@ def test_a_violation_that_points_outside_the_draft_is_ignored() -> None:
 
     assert len(document.blocks) == 3
     assert document.dropped == ()
+
+
+def test_a_company_name_from_a_posting_cannot_bring_markup_into_a_letter() -> None:
+    job = example_job(company="[Evil](https://evil.test) <b>Co</b>")
+    blocks = (
+        Block(Section.BODY, BlockKind.PLAIN, "I am writing about the role."),
+        Block(Section.BODY, BlockKind.CLAIM, "I built an allocation service on Kafka.", ("acme-allocation",)),
+    )
+    document = assemble(DocumentKind.COVER, "en", blocks, [], example_career(), job).unwrap()
+    first = document.markdown.splitlines()[0]
+    assert first == "Dear Evil https evil.test b Co /b team,"
+    assert "](" not in document.markdown
+    assert "<b>" not in document.markdown

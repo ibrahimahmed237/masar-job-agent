@@ -20,7 +20,7 @@ from masar.domain.findings import Finding, Result
 from masar.domain.job import Job
 from masar.domain.languages import LANGUAGE_NAMES
 from masar.domain.skills import SkillLexicon
-from masar.domain.text import arabic_share, normalize, western_digits
+from masar.domain.text import arabic_share, has_unseen, normalize, western_digits
 
 
 class DocumentKind(StrEnum):
@@ -305,8 +305,10 @@ def check_block(block: Block, index: int, context: ClaimContext) -> list[Violati
     if not text.strip():
         add("FORMAT", "empty")
         return found
-    if "\n" in text or _URL.search(text) or _HTML.search(text) or _MARKDOWN_START.match(text):
-        add("FORMAT", "a block is one line of plain text: no line breaks, links, HTML or list marks")
+    if "\n" in text or has_unseen(text) or _URL.search(text) or _HTML.search(text) or _MARKDOWN_START.match(text):
+        add(
+            "FORMAT", "a block is one line of plain text: no line breaks, links, HTML, list marks or control characters"
+        )
     if placeholder := _PLACEHOLDER.search(text):
         add("PLACEHOLDER", placeholder.group(0))
     limit = MAX_BULLET if block.section is not Section.BODY else MAX_PARAGRAPH

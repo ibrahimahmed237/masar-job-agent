@@ -31,6 +31,7 @@ from masar.domain.claims import Block, BlockKind, ClaimContext, DocumentKind, Se
 from masar.domain.findings import Finding
 from masar.domain.job import Posting, Source
 from masar.domain.matching import title_matches
+from masar.domain.text import without_unseen
 from masar.ports.clock import Clock
 from masar.ports.files import FileProblem, Files
 from masar.ports.model import ChatModel, ModelUnavailable
@@ -175,16 +176,15 @@ class Masar:
     def add_posting(
         self, company: str, title: str, text: str, url: str | None = None, location: str | None = None
     ) -> tuple[StoredPosting, bool]:
-        company, title, text = " ".join(company.split()), " ".join(title.split()), text.strip()
-        if not company or not title:
+        if url and url.strip() and not _is_web_address(url.strip()):
+            raise errors.AppError("the address of a posting starts with http:// or https://")
+        posting = _admitted(Posting(Source.MANUAL, company, title, text, url, location))
+        if not posting.company or not posting.title:
             raise errors.AppError("a posting needs a company and a title")
-        if not text:
+        if not posting.text:
             raise errors.AppError("the posting has no text")
-        if len(text) > MAX_POSTING_TEXT:
+        if len(posting.text) > MAX_POSTING_TEXT:
             raise errors.AppError(f"the posting is longer than {MAX_POSTING_TEXT} characters")
-        posting = Posting(
-            Source.MANUAL, company, title, text, (url or "").strip() or None, (location or "").strip() or None
-        )
         return self._store.add_posting(posting, self._clock.now())
 
     def fetch(self) -> list[FetchReport]:
@@ -200,14 +200,18 @@ class Masar:
         for board in watchlist.value:
             result = self._boards.fetch(board)
             new = known = filtered = 0
-            for posting in result.postings:
+            skipped = result.skipped
+            for posting in map(_admitted, result.postings):
+                if not posting.title or not posting.text or len(posting.text) > MAX_POSTING_TEXT:
+                    skipped += 1  # nothing left after cleaning, or far too long to be a posting
+                    continue
                 if not title_matches(posting.title, career.limits):
                     filtered += 1
                     continue
                 _, created = self._store.add_posting(posting, self._clock.now())
                 new += created
                 known += not created
-            reports.append(FetchReport(board, new, known, filtered, result.skipped, result.error))
+            reports.append(FetchReport(board, new, known, filtered, skipped, result.error))
         return reports
 
     def _posting(self, posting_id: int) -> StoredPosting:
@@ -498,6 +502,31 @@ class Masar:
         context = ClaimContext(career, self._today(), language, job, posting_text)
         block = Block(Section.BODY, BlockKind.CLAIM, " ".join(text.split()), tuple(dict.fromkeys(fact_ids)))
         return check_block(block, 0, context)
+
+
+def _is_web_address(url: str) -> bool:
+    return url.casefold().startswith(("http://", "https://")) and " " not in url
+
+
+def _admitted(posting: Posting) -> Posting:
+    """A posting as it is let in: text from outside, with nothing in it that draws nothing.
+
+    A posting is shown in a terminal and given to assistants. Control characters could recolour or hide what
+    the person reads there, so they go at the door, for pasted postings and fetched ones alike.
+    """
+
+    def line(value: str | None) -> str:
+        return " ".join(without_unseen(value or "").split())
+
+    url = line(posting.url)
+    return replace(
+        posting,
+        company=line(posting.company),
+        title=line(posting.title),
+        text=without_unseen(posting.text).strip(),
+        url=url if _is_web_address(url) else None,
+        location=line(posting.location) or None,
+    )
 
 
 def _reason(error: Exception) -> str:

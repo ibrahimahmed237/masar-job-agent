@@ -627,3 +627,49 @@ class TestEdges:
             ("UNSUPPORTED_TERM", "Backend"),
             ("UNSUPPORTED_TITLE", "senior"),
         ]
+
+
+class TestTextFromOutside:
+    """A posting is shown in a terminal and given to assistants: nothing hidden gets in."""
+
+    def test_a_pasted_posting_is_stored_without_control_characters(self, world: World) -> None:
+        stored, _ = world.app.add_posting(
+            "Tam\x1b[2Jween", "Backend\u202e Engineer", "Line one\x07\r\nLine\x1b[31m two\n", location=" Riyadh\x00 "
+        )
+        posting = stored.posting
+        assert (posting.company, posting.title, posting.location) == ("Tam[2Jween", "Backend Engineer", "Riyadh")
+        assert posting.text == "Line one\nLine[31m two"
+
+    def test_a_posting_that_is_only_hidden_characters_has_no_text(self, world: World) -> None:
+        with pytest.raises(AppError, match="no text"):
+            world.app.add_posting("C", "T", "\x1b\x07\x00")
+        with pytest.raises(AppError, match="company and a title"):
+            world.app.add_posting("\x1b", "T", "text")
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "file:///etc/passwd", "x.test/job", "https://x.test/a b"])
+    def test_the_address_of_a_posting_is_a_web_address(self, world: World, url: str) -> None:
+        with pytest.raises(AppError, match="starts with http"):
+            world.app.add_posting("C", "T", "text", url)
+
+    def test_a_fetched_posting_is_cleaned_the_same_way(self, world: World) -> None:
+        board = Board(Source.GREENHOUSE, "tamween", "Tamween")
+        world.watchlist_path.write_text("boards:\n  - {source: greenhouse, board: tamween}\n", encoding="utf-8")
+        world.boards.serve(
+            board,
+            Posting(
+                Source.GREENHOUSE,
+                "Tamween",
+                "Backend\x1b[0m Engineer",
+                "Text\x1b one.",
+                "javascript:x",
+                "Riyadh",
+                "tamween:1",
+            ),
+            Posting(Source.GREENHOUSE, "Tamween", "\x1b", "Text two.", external_id="tamween:2"),
+            Posting(Source.GREENHOUSE, "Tamween", "Backend Engineer", "x" * 200_001, external_id="tamween:3"),
+        )
+        (report,) = world.app.fetch()
+        assert (report.new, report.skipped, report.filtered) == (1, 2, 0)
+        (job,) = world.app.list_jobs()
+        assert (job.title, job.url) == ("Backend[0m Engineer", None)
+        assert world.app.job(job.posting_id).posting.posting.text == "Text one."

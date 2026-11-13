@@ -15,7 +15,7 @@ from typing import Any
 
 from masar.domain.findings import Finding, Result
 from masar.domain.skills import canonical, spellings
-from masar.domain.text import contains, normalize
+from masar.domain.text import contains, normalize, without_unseen
 
 MAX_REQUIREMENTS = 40
 MAX_REQUIREMENT_TEXT = 300
@@ -232,7 +232,7 @@ def ground_job(candidate: Any, posting: Posting) -> Result[Job]:
 
 
 def _text(value: Any) -> str:
-    return " ".join(value.split()) if isinstance(value, str) else ""
+    return " ".join(without_unseen(value).split()) if isinstance(value, str) else ""
 
 
 def _short(value: str) -> str:

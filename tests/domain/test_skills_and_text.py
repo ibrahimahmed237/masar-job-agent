@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from masar.domain.skills import SkillLexicon, canonical, canonical_set, display, is_known, spellings
-from masar.domain.text import arabic_share, contains, normalize, western_digits
+from masar.domain.text import arabic_share, contains, has_unseen, normalize, plain_name, western_digits, without_unseen
 
 
 @pytest.mark.parametrize(
@@ -115,3 +115,23 @@ def test_arabic_share() -> None:
     assert arabic_share("خبرة في Kafka") > 0.4
     assert arabic_share("Experience with Kafka") == 0
     assert arabic_share("123 !") == 0
+
+
+class TestTextFromOutside:
+    def test_control_characters_and_reordering_marks_are_taken_out(self) -> None:
+        hostile = "Backend\x1b[31m Engineer\x07 \u202egnisrever\u202c \x9b2J"
+        # What is left is harmless text: the characters that made it a command are gone.
+        assert without_unseen(hostile) == "Backend[31m Engineer gnisrever 2J"
+        assert has_unseen(hostile)
+        assert not has_unseen(without_unseen(hostile))
+
+    def test_line_breaks_tabs_and_arabic_stay(self) -> None:
+        text = "سطر أول\nline two\twith a tab\r\nline three\rline four ‏"
+        assert without_unseen(text) == "سطر أول\nline two\twith a tab\nline three\nline four ‏"
+        assert not has_unseen("سطر أول\nline two\twith a tab")
+
+    def test_a_name_from_outside_loses_what_markdown_would_act_on(self) -> None:
+        assert plain_name("Tamween") == "Tamween"
+        assert plain_name("Al-Futtaim & Sons, Ltd.") == "Al-Futtaim & Sons, Ltd."
+        assert plain_name("[Evil](https://evil.test) <b>Co</b> `x` | # *big*") == "Evil https evil.test b Co /b x big"
+        assert plain_name("  Many   spaces \x1b[0m ") == "Many spaces 0m"

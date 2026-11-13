@@ -303,3 +303,14 @@ def test_the_same_content_is_the_same_posting() -> None:
 
     assert POSTING.checksum == again.checksum
     assert POSTING.checksum != other.checksum
+
+
+def test_what_the_model_writes_about_a_requirement_is_kept_without_hidden_characters() -> None:
+    posting = Posting(Source.MANUAL, "Tamween", "Backend Engineer", "We ask for strong knowledge of Python.")
+    reading = {
+        "requirements": [
+            {"text": "Python\x1b[31m, strongly", "quote": "strong knowledge of Python", "skills": ["Python"]}
+        ]
+    }
+    job = ground_job(reading, posting).unwrap()
+    assert job.requirements[0].text == "Python[31m, strongly"

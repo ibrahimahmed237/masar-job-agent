@@ -509,3 +509,8 @@ def test_a_fact_that_says_owned_supports_it() -> None:
     facts[4]["text"] = "Owned payments: integrated Stripe and PayPal for stores in 4 currencies."
     ctx = ClaimContext(career_with(facts=facts), TODAY, "en", example_job(), POSTING)
     assert codes(claim("I owned payments and integrated Stripe and PayPal.", "nimbus-payments"), ctx) == []
+
+
+def test_a_block_with_hidden_characters_is_a_format_violation() -> None:
+    assert "FORMAT" in only(claim("I built an allocation service.\x1b[8m and more", "acme-allocation"))
+    assert "FORMAT" in only(plain("I am writing about the role.\u202e"))

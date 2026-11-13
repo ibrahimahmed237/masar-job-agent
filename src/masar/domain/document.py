@@ -12,6 +12,7 @@ from masar.domain.findings import Finding, Result
 from masar.domain.job import Job
 from masar.domain.languages import LANGUAGE_NAMES
 from masar.domain.skills import canonical
+from masar.domain.text import plain_name
 
 _LABELS = {
     "en": {
@@ -141,7 +142,8 @@ def _cv(blocks: tuple[Block, ...], career: Career, job: Job, labels: dict[str, s
         lines += [f"## {labels['education']}", ""]
         for fact in education:
             tail = ", ".join(filter(None, (fact.org, _period(fact.period, labels))))
-            lines.append(f"- {fact.text}" + (f" — {tail}" if tail else ""))
+            # "BSc in Computer Science. — Cairo University" reads badly: the full stop goes when more follows.
+            lines.append(f"- {fact.text.rstrip('.') if tail else fact.text}" + (f" — {tail}" if tail else ""))
         lines.append("")
 
     skills = career.skill_spellings
@@ -162,7 +164,8 @@ def _cv(blocks: tuple[Block, ...], career: Career, job: Job, labels: dict[str, s
 
 def _letter(kind: DocumentKind, body: list[str], career: Career, job: Job, labels: dict[str, str]) -> str:
     person = career.person
-    greeting = labels["dear" if kind is DocumentKind.COVER else "hello"].format(company=job.company)
+    # The company's name comes from a posting. It goes into the letter as a name, and as nothing else.
+    greeting = labels["dear" if kind is DocumentKind.COVER else "hello"].format(company=plain_name(job.company))
     lines = [greeting, ""]
     for paragraph in body:
         lines += [paragraph, ""]
