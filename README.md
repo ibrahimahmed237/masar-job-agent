@@ -56,7 +56,7 @@ flowchart LR
 Masar needs Python 3.12 or later and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/ibrahimahmed237/masar.git && cd masar && uv sync
+git clone https://github.com/ibrahimahmed237/masar-job-agent.git && cd masar-job-agent && uv sync
 uv run masar init                       # writes ~/.masar/career.yaml and watchlist.yaml
 uv run masar profile check              # after you put your own facts into career.yaml
 ```
