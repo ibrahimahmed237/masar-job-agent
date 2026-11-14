@@ -131,6 +131,7 @@ It cannot approve or reject a draft, move an application, export a document or f
 | [Low-level designs](docs/lld/README.md) | One page per part |
 | [Architecture decisions](docs/adr/README.md) | Why each important choice was made |
 | [Evaluation](docs/lld/evaluation.md) | The sets, the measures, the results, and how to read them |
+| [How the evaluations work](evals/HOW-IT-WORKS.md) | The same in plain words: what an evaluation is, the one result so far, and what is still open |
 | [Reviews](docs/reviews) | What each review found and what was done about it |
 | [Glossary](docs/GLOSSARY.md) | The words used in the code and the docs |
 | [Development](DEVELOPMENT.md) | Setup, commands, where things are |

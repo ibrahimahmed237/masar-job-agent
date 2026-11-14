@@ -1,6 +1,6 @@
 # Evaluation — numbers for the three risky steps
 
-A flow that passes its tests with a scripted model can still be bad with a real one. Each step where a model decides something has a set and a score.
+A flow that passes its tests with a scripted model can still be bad with a real one. Each step where a model decides something has a set and a score. A plain-words version is in [evals/HOW-IT-WORKS.md](../../evals/HOW-IT-WORKS.md).
 
 ## Sets
 

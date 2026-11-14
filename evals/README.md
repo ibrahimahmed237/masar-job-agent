@@ -1,6 +1,6 @@
 # Evaluation sets
 
-Invented data for measuring the steps where a model decides something. The design is in [docs/lld/evaluation.md](../docs/lld/evaluation.md).
+Invented data for measuring the steps where a model decides something. The design is in [docs/lld/evaluation.md](../docs/lld/evaluation.md). New to it? [How the evaluations work](HOW-IT-WORKS.md) explains them in plain words.
 
 | File | What it measures |
 |---|---|
