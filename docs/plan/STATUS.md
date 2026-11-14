@@ -43,9 +43,8 @@ See the milestones in [PLAN.md](PLAN.md).
 
 | # | Question | Needed for |
 |---|---|---|
-| 1 | The project name: "Masar" is a working name | Before the first public push |
-| 2 | Real model numbers for the evaluations | With the owner's key: `masar eval extraction`, `assessment`, `injection`, `claims --judge` |
-| 3 | A first run on real postings with a real model | With the owner's key and career file. The prompts were never read by a real model |
+| 1 | Real model numbers for the evaluations | With the owner's key: `masar eval extraction`, `assessment`, `injection`, `claims --judge` |
+| 2 | A first run on real postings with a real model | With the owner's key and career file. The prompts were never read by a real model |
 
 ## Log
 
@@ -59,3 +58,4 @@ See the milestones in [PLAN.md](PLAN.md).
 | 2026-11-13 | M6 done: use cases, the `masar` command line, the `masar-mcp` server. |
 | 2026-11-13 | M7 done: four evaluation sets, scoring, `masar eval`. The claims set runs with no model and has a committed result; the other three wait for a model key. |
 | 2026-11-13 | M8 done: text from outside cleaned at the door, the demo, the final review. 654 tests. |
+| 2026-11-14 | Name kept: Masar. Published as `masar-job-agent`. |
