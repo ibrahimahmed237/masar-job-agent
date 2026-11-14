@@ -6,6 +6,8 @@ A personal job-hunt agent that may only say about you what you wrote yourself.
 
 Masar collects job postings, screens and scores them against your own career file, drafts a tailored CV, cover letter and outreach message, and tracks your applications. It runs on your machine, for you alone.
 
+![One posting through Masar: a hidden note tells the model to claim 10 years of Kubernetes, the model believes it, and code checks the claim against your own facts and lowers it](docs/media/posting-flow.svg)
+
 The rule that shapes everything: **the model writes, the code verifies.**
 
 - You write a **career file**: your facts, each with an id. Masar never says anything about you that is not in it.
